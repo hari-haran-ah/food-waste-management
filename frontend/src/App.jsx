@@ -1,7 +1,11 @@
-export default function App() {
+import AuthFormContainer from "./pages/login/AuthFormContainer"
+
+function App() {
   return (
-    <h1 className="text-3xl font-bold underline">
-      Hello world!
-    </h1>
-  )
+    <div>
+      <AuthFormContainer />
+    </div>
+  );
 }
+
+export default App;
