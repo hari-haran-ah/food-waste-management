@@ -7,6 +7,7 @@ import SignUpPage from './pages/SignUpPage';
 import DonatingFoodPage from "./pages/DonatingFoodPage";
  // Adjust the path as needed
 import BookingFoodPage from './pages/BookingFoodPage'; // Adjust the path as needed
+import FoodDetailsPage from './pages/FoodDetailsPage';
 
 
 const App = () => {
@@ -30,6 +31,7 @@ const App = () => {
             <Route path="/home" element={<HomePage />} />
             <Route path="donating-food" element={<DonatingFoodPage />} />
             <Route path="booking-food" element={<BookingFoodPage />} />
+            <Route path="/donation/:id" element={<FoodDetailsPage />} />
             
 
             

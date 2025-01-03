@@ -39,23 +39,60 @@ router.get('/all', async (req, res) => {
   }
 });
 
-// Route to update booking status
-// Add route to update booking status
-router.post('/book', async (req, res) => {
-    const { donationId, isBooked } = req.body;
+
+
+router.get('/:id', async (req, res) => {
+    const { id } = req.params;
   
     try {
-      // Find the donation by its ID and update its booking status
-      const donation = await Donation.findByIdAndUpdate(donationId, { isBooked }, { new: true });
+      const donation = await Donation.findById(id);
+      if (!donation) {
+        return res.status(404).json({ message: 'Donation not found' });
+      }
+      res.status(200).json(donation);
+    } catch (err) {
+      res.status(500).json({ message: 'Failed to fetch donation details' });
+    }
+  });
+  
+  // Route to book a donation
+  router.post('/book', async (req, res) => {
+    const { donationId, username } = req.body;
+  
+    if (!donationId || !username) {
+      return res.status(400).json({ message: 'Donation ID and username are required' });
+    }
+  
+    try {
+      // Find the donation by ID
+      const donation = await Donation.findById(donationId);
+  
       if (!donation) {
         return res.status(404).json({ message: 'Donation not found' });
       }
   
-      res.status(200).json({ message: 'Booking status updated', donation });
+      // Check if the donation is already booked
+      if (donation.isBooked) {
+        return res.status(400).json({ message: 'This donation is already booked' });
+      }
+  
+      // Update the booking status and the username of the person who booked it
+      donation.isBooked = true;
+      donation.bookedBy = username;  // Optional: track who booked it
+  
+      // Save the updated donation
+      await donation.save();
+  
+      res.status(200).json({
+        message: 'Donation booked successfully',
+        donation: donation,
+      });
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Error updating booking status' });
+      console.error('Error booking donation:', error);
+      res.status(500).json({ message: 'Error booking donation' });
     }
   });
-  
+
+
+
 module.exports = router;
