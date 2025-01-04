@@ -1,9 +1,10 @@
-// pages/SignInPage.js
+//SignInPage.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signIn } from '../api/auth';
-import SignInForm from '../components/SignInForm';
+import SignInForm from '../components/SignInForm'; // Make sure this is imported
 import { motion } from 'framer-motion';
+import Cookies from 'js-cookie';
 
 const SignInPage = () => {
   const [loading, setLoading] = useState(false);
@@ -15,7 +16,8 @@ const SignInPage = () => {
     setError('');
     try {
       const response = await signIn({ email, password });
-      localStorage.setItem('user', JSON.stringify(response.data)); // Store user info in localStorage
+      // Store user info in cookies
+      Cookies.set('user', JSON.stringify(response.data), { expires: 7, secure: true, sameSite: 'Strict' });
       navigate('/home'); // Navigate to HomePage after successful sign-in
     } catch (err) {
       setError('Invalid email or password'); // Show error if login fails

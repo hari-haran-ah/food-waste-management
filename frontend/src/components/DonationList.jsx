@@ -21,18 +21,17 @@ const DonationList = () => {
   }, []);
 
   const handleBookingChange = async (donationId, currentStatus) => {
-    const updatedStatus = !currentStatus; // Toggle the booking status
     try {
-      const result = await updateBookingStatus(donationId, 'User123'); // Replace 'User123' with logged-in username
-      console.log(result); // Handle success or updated donation data here
-      setDonations(prevDonations =>
-        prevDonations.map(donation =>
-          donation._id === donationId ? { ...donation, isBooked: true } : donation
-        )
-      );
+      const result = await updateBookingStatus(donationId, 'User123'); // Replace 'User123' with the logged-in username
+      if (result.success) {
+        setDonations((prevDonations) =>
+          prevDonations.filter((donation) => donation._id !== donationId)
+        );
+      }
     } catch (error) {
       console.error('Failed to book donation', error);
     }
+  };
   };
 
   if (loading) {
@@ -59,6 +58,6 @@ const DonationList = () => {
       ))}
     </div>
   );
-};
+
 
 export default DonationList;
