@@ -63,7 +63,7 @@ router.post('/signin', async (req, res) => {
   try {
     // Find user by email
     const user = await User.findOne({ email });
-    
+
     if (!user) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
@@ -75,12 +75,11 @@ router.post('/signin', async (req, res) => {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
-    // Create JWT token
-    const token = jwt.sign(
-      { userId: user._id, email: user.email },
-      JWT_SECRET,
-      { expiresIn: '1h' }
-    );
+    // Exclude password from the token payload
+    const { password: _, ...userData } = user.toObject(); // Remove password field
+
+    // Create JWT token with user details excluding password
+    const token = jwt.sign(userData, JWT_SECRET, { expiresIn: '1h' });
 
     // Send JWT token to frontend
     res.status(200).json({ message: 'Login successful', token });
@@ -89,5 +88,6 @@ router.post('/signin', async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 });
+
 
 module.exports = router;

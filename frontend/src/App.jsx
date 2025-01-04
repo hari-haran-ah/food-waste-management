@@ -7,6 +7,7 @@ import SignUpPage from './pages/SignUpPage';
 import DonatingFoodPage from './pages/DonatingFoodPage'; // Adjust the path as needed
 import BookingFoodPage from './pages/BookingFoodPage'; // Adjust the path as needed
 import FoodDetailsPage from './pages/FoodDetailsPage';
+import HistoryPage from './pages/HistoryPage/';
 
 const App = () => {
   const location = useLocation();
@@ -29,6 +30,7 @@ const App = () => {
             <Route path="donating-food" element={<DonatingFoodPage />} />
             <Route path="booking-food" element={<BookingFoodPage />} />
             <Route path="/donation/:id" element={<FoodDetailsPage />} />
+            <Route path="/history" element={<HistoryPage />} />
 
             {/* Fallback for Unknown Routes */}
             <Route

@@ -32,12 +32,20 @@ const BookingDonationPage = () => {
       <header className="bg-white text-blue-600 p-4 fixed top-0 left-0 w-full z-10 shadow-md">
         <div className="flex justify-between items-center px-6">
           <h1 className="text-3xl font-bold">FOOD DONATE APP</h1>
-          <button
-            className="text-blue-600 border border-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300"
-            onClick={() => navigate('/home')}
-          >
-            Home
-          </button>
+          <div className="flex space-x-4">
+            <button
+              className="text-blue-600 border border-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300"
+              onClick={() => navigate('/home')}
+            >
+              Home
+            </button>
+            <button
+              className="text-blue-600 border border-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300"
+              onClick={() => navigate('/history')}
+            >
+              History
+            </button>
+          </div>
         </div>
       </header>
 
@@ -46,15 +54,10 @@ const BookingDonationPage = () => {
         {donations.map((donation) => (
           <div
             key={donation._id}
-            className={`bg-white p-4 rounded-lg shadow-md ${
-              donation.isBooked ? 'opacity-50 pointer-events-none' : 'opacity-100'
-            }`}
+            className={`bg-white p-4 rounded-lg shadow-md ${donation.isBooked ? 'opacity-50 pointer-events-none' : 'opacity-100'}`}
           >
             <h3 className="text-xl font-medium">
-              <Link
-                to={`/donation/${donation._id}`}
-                className="text-blue-500 hover:underline"
-              >
+              <Link to={`/donation/${donation._id}`} className="text-blue-500 hover:underline">
                 {donation.foodName}
               </Link>
             </h3>
