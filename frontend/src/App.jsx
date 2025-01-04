@@ -4,11 +4,9 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import HomePage from './pages/HomePage';
 import SignInPage from './pages/SignInPage';
 import SignUpPage from './pages/SignUpPage';
-import DonatingFoodPage from "./pages/DonatingFoodPage";
- // Adjust the path as needed
+import DonatingFoodPage from './pages/DonatingFoodPage'; // Adjust the path as needed
 import BookingFoodPage from './pages/BookingFoodPage'; // Adjust the path as needed
 import FoodDetailsPage from './pages/FoodDetailsPage';
-
 
 const App = () => {
   const location = useLocation();
@@ -27,16 +25,31 @@ const App = () => {
             {/* Main Routes */}
             <Route path="/" element={<SignInPage />} />
             <Route path="/signup" element={<SignUpPage />} />
-            
             <Route path="/home" element={<HomePage />} />
             <Route path="donating-food" element={<DonatingFoodPage />} />
             <Route path="booking-food" element={<BookingFoodPage />} />
             <Route path="/donation/:id" element={<FoodDetailsPage />} />
-            
 
-            
             {/* Fallback for Unknown Routes */}
-            <Route path="*" element={<div className="text-center mt-10">Page Not Found</div>} />
+            <Route
+              path="*"
+              element={
+                <div className="page-not-found-container">
+                  <h1 className="text-6xl font-bold text-red-600 animate-bounce">
+                    404
+                  </h1>
+                  <p className="text-xl mt-4 text-gray-700">
+                    Oops! The page you're looking for doesn't exist.
+                  </p>
+                  <button
+                    className="mt-6 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition duration-300"
+                    onClick={() => (window.location.href = '/home')}
+                  >
+                    Go to Home
+                  </button>
+                </div>
+              }
+            />
           </Routes>
         </div>
       </CSSTransition>
