@@ -8,7 +8,7 @@ const SignUpForm = ({ onSignUp, loading, error }) => {
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefaul
     onSignUp(name, email, password, confirmPassword);
   };
 

@@ -9,6 +9,7 @@ import DonatingFoodPage from './pages/DonatingFoodPage'; // Adjust the path as n
 import BookingFoodPage from './pages/BookingFoodPage'; // Adjust the path as needed
 import FoodDetailsPage from './pages/FoodDetailsPage';
 import PrivateRoute from './components/PrivateRoute'; // Import PrivateRoute
+import HistoryPage from './pages/HistoryPage/';
 
 const App = () => {
   const location = useLocation();
@@ -28,12 +29,13 @@ const App = () => {
             <Route path="/" element={<SignInPage />} />
             <Route path="/signup" element={<SignUpPage />} />
 
+
             {/* Private Routes */}
             <Route path="/home" element={<PrivateRoute element={<HomePage />} />} />
             <Route path="/donating-food" element={<PrivateRoute element={<DonatingFoodPage />} />} />
             <Route path="/booking-food" element={<PrivateRoute element={<BookingFoodPage />} />} />
             <Route path="/donation/:id" element={<PrivateRoute element={<FoodDetailsPage />} />} />
-
+            <Route path="/History" element={<PrivateRoute element={<HistoryPage />} />} />
             {/* Fallback for Unknown Routes */}
             <Route
               path="*"

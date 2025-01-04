@@ -23,8 +23,13 @@ const DonationList = () => {
   const handleBookingChange = async (donationId, currentStatus) => {
     const updatedStatus = !currentStatus; // Toggle the booking status
     try {
-      const result = await updateBookingStatus(donationId, updatedStatus, 'User123'); // Replace 'User123' with the logged-in username
+      const result = await updateBookingStatus(donationId, 'User123'); // Replace 'User123' with logged-in username
       console.log(result); // Handle success or updated donation data here
+      setDonations(prevDonations =>
+        prevDonations.map(donation =>
+          donation._id === donationId ? { ...donation, isBooked: true } : donation
+        )
+      );
     } catch (error) {
       console.error('Failed to book donation', error);
     }
