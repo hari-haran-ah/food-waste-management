@@ -8,7 +8,7 @@ import SignUpPage from './pages/SignUpPage';
 import DonatingFoodPage from './pages/DonatingFoodPage'; // Adjust the path as needed
 import BookingFoodPage from './pages/BookingFoodPage'; // Adjust the path as needed
 import FoodDetailsPage from './pages/FoodDetailsPage';
-import PrivateRoute from './components/PrivateRoute'; // Import PrivateRoute
+import PrivateRoute from './components/PrivateRoute'; 
 import HistoryPage from './pages/HistoryPage/';
 import About from './pages/About';
 import { AuthProvider } from './context/AuthContext'; // Wrap in AuthContext provider for global state
