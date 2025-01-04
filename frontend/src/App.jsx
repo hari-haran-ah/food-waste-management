@@ -5,8 +5,8 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import HomePage from './pages/HomePage';
 import SignInPage from './pages/SignInPage';
 import SignUpPage from './pages/SignUpPage';
-import DonatingFoodPage from './pages/DonatingFoodPage'; // Adjust the path as needed
-import BookingFoodPage from './pages/BookingFoodPage'; // Adjust the path as needed
+import DonatingFoodPage from './pages/DonatingFoodPage'; 
+import BookingFoodPage from './pages/BookingFoodPage'; 
 import FoodDetailsPage from './pages/FoodDetailsPage';
 import PrivateRoute from './components/PrivateRoute'; 
 import HistoryPage from './pages/HistoryPage/';
