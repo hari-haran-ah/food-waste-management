@@ -6,6 +6,8 @@ import SignInForm from '../components/SignInForm'; // Make sure this is imported
 import { motion } from 'framer-motion';
 import Cookies from 'js-cookie';
 
+import AppIcon from '../components/AppIcon';
+
 const SignInPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -31,7 +33,8 @@ const SignInPage = () => {
       {/* Fixed Header at the Top of the Window */}
       <header className="bg-white text-blue-600 p-4 fixed top-0 left-0 w-full z-10 shadow-md">
         <div className="w-full p-6 bg-white shadow-lg flex justify-between items-center fixed top-0 left-0 z-50">
-          <h1 className="text-4xl font-semibold text-blue-600">FOOD DONATE APP</h1>
+        <h1 className="text-3xl font-bold inline-block flex items-center whitespace-nowrap">FOOD DONATE APP
+        <AppIcon className="inline-block ml-1" /></h1> 
 
           {/* Sign Up Button in Header Right Side */}
           <button

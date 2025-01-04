@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getDonations, updateBookingStatus } from '../api/donationApi';
+import AppIcon from '../components/AppIcon';
 
 const FoodDetailsPage = () => {
   const { id } = useParams();
@@ -53,7 +54,8 @@ const FoodDetailsPage = () => {
     <div className="min-h-screen bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-600 p-6">
       <header className="bg-white text-blue-600 p-4 fixed top-0 left-0 w-full z-10 shadow-md">
         <div className="flex justify-between items-center px-6">
-          <h1 className="text-3xl font-bold">FOOD DONATE APP</h1>
+        <h1 className="text-3xl text-blue-600 font-bold inline-block flex items-center whitespace-nowrap">FOOD DONATE APP
+        <AppIcon className="inline-block ml-1" /></h1>
           <button
             className="text-blue-600 border border-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300"
             onClick={() => navigate('/booking-food')}

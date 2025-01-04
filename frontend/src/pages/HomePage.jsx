@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Cookies from 'js-cookie'; // Import js-cookie
+import AppIcon from '../components/AppIcon';
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -11,7 +12,7 @@ const HomePage = () => {
 
   const handleDonationPostClick = () => {
     setShowDonationPost(true);
-  };
+  };  
 
   // Sign Out function
   const handleSignOut = () => {
@@ -24,8 +25,9 @@ const HomePage = () => {
       <header className="bg-white text-blue-600 p-4 fixed top-0 left-0 w-full z-10 shadow-md">
 
 
-      <div className="flex justify-between items-center px-6">
-          <h1 className="text-3xl font-bold">FOOD DONATE APP</h1>
+      <div className="flex justify-between items-center px-6 ">
+          <h1 className="text-3xl font-bold inline-block flex items-center whitespace-nowrap">FOOD DONATE APP
+          <AppIcon className="inline-block ml-1" /></h1> 
           <div className="flex space-x-4">
             <button
               className="text-blue-600 border border-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300"

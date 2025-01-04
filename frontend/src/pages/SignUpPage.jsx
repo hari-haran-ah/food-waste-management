@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signUp } from '../api/auth'; // Ensure this points to your API method
 import SignUpForm from '../components/SignUpForm'; // Ensure this is the correct path for your form
+import AppIcon from '../components/AppIcon';
 
 const SignUpPage = () => {
   const [loading, setLoading] = useState(false);
@@ -41,7 +42,8 @@ const SignUpPage = () => {
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-green-400 via-blue-500 to-indigo-600">
       {/* Header */}
       <header className="w-full p-6 bg-white shadow-lg flex justify-between items-center fixed top-0 left-0 z-50">
-        <h1 className="text-4xl font-semibold text-blue-600">FOOD DONATE APP</h1>
+      <h1 className="text-3xl text-blue-600 font-bold inline-block flex items-center whitespace-nowrap">FOOD DONATE APP
+      <AppIcon className="inline-block ml-1" /></h1> 
         {/* Button for Sign In navigation */}
         <button
           onClick={() => navigate('/')}
