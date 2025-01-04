@@ -10,6 +10,7 @@ import BookingFoodPage from './pages/BookingFoodPage'; // Adjust the path as nee
 import FoodDetailsPage from './pages/FoodDetailsPage';
 import PrivateRoute from './components/PrivateRoute'; // Import PrivateRoute
 import HistoryPage from './pages/HistoryPage/';
+import About from './pages/About';
 import { AuthProvider } from './context/AuthContext'; // Wrap in AuthContext provider for global state
 
 const App = () => {
@@ -37,6 +38,8 @@ const App = () => {
               <Route path="/booking-food" element={<PrivateRoute element={<BookingFoodPage />} />} />
               <Route path="/donation/:id" element={<PrivateRoute element={<FoodDetailsPage />} />} />
               <Route path="/History" element={<PrivateRoute element={<HistoryPage />} />} />
+              <Route path="/about" element={<PrivateRoute element={<About />} />} />
+
 
               {/* Fallback for Unknown Routes */}
               <Route
