@@ -1,3 +1,4 @@
+// App.jsx
 import { useRef } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
@@ -7,6 +8,7 @@ import SignUpPage from './pages/SignUpPage';
 import DonatingFoodPage from './pages/DonatingFoodPage'; // Adjust the path as needed
 import BookingFoodPage from './pages/BookingFoodPage'; // Adjust the path as needed
 import FoodDetailsPage from './pages/FoodDetailsPage';
+import PrivateRoute from './components/PrivateRoute'; // Import PrivateRoute
 
 const App = () => {
   const location = useLocation();
@@ -22,13 +24,15 @@ const App = () => {
       >
         <div ref={nodeRef}>
           <Routes location={location}>
-            {/* Main Routes */}
+            {/* Public Routes */}
             <Route path="/" element={<SignInPage />} />
             <Route path="/signup" element={<SignUpPage />} />
-            <Route path="/home" element={<HomePage />} />
-            <Route path="donating-food" element={<DonatingFoodPage />} />
-            <Route path="booking-food" element={<BookingFoodPage />} />
-            <Route path="/donation/:id" element={<FoodDetailsPage />} />
+
+            {/* Private Routes */}
+            <Route path="/home" element={<PrivateRoute element={<HomePage />} />} />
+            <Route path="/donating-food" element={<PrivateRoute element={<DonatingFoodPage />} />} />
+            <Route path="/booking-food" element={<PrivateRoute element={<BookingFoodPage />} />} />
+            <Route path="/donation/:id" element={<PrivateRoute element={<FoodDetailsPage />} />} />
 
             {/* Fallback for Unknown Routes */}
             <Route

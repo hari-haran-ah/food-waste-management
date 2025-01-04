@@ -1,3 +1,4 @@
+// components/SignInForm.jsx
 import React, { useState } from 'react';
 
 const SignInForm = ({ onSignIn, loading, error }) => {

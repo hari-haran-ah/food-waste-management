@@ -1,3 +1,4 @@
+// components/DonationList.jsx
 import React, { useState, useEffect } from 'react';
 import { getDonations, updateBookingStatus } from '../api/donationApi';
 

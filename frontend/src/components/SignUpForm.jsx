@@ -1,3 +1,4 @@
+// components/SignUpForm.jsx
 import React, { useState } from 'react';
 
 const SignUpForm = ({ onSignUp, loading, error }) => {

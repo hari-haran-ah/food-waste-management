@@ -1,3 +1,4 @@
+// pages/BookingFoodPage.jsx
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getDonations } from '../api/donationApi';

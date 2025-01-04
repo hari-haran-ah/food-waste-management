@@ -1,13 +1,18 @@
+
+
+// index.js or App.jsx
 import React from 'react';
-import ReactDOM from 'react-dom/client';
+import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
-import App from './App';
+import { AuthProvider } from './context/AuthContext'; // Adjust the path
+import App from './App'; // Adjust the path
 import './index.css';
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <Router>
+ReactDOM.render(
+  <Router>
+    <AuthProvider>
       <App />
-    </Router>
-  </React.StrictMode>
+    </AuthProvider>
+  </Router>,
+  document.getElementById('root')
 );
