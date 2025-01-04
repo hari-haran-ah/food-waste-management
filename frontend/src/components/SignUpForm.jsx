@@ -1,5 +1,5 @@
-// components/SignUpForm.jsx
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const SignUpForm = ({ onSignUp, loading, error }) => {
   const [name, setName] = useState('');
@@ -8,63 +8,101 @@ const SignUpForm = ({ onSignUp, loading, error }) => {
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleSubmit = (e) => {
-    e.preventDefaul
+    e.preventDefault();
+    if (password !== confirmPassword) {
+      return; // Optional: handle password mismatch in UI
+    }
     onSignUp(name, email, password, confirmPassword);
   };
 
+  const inputVariants = {
+    focus: { 
+      scale: 1.02, 
+      boxShadow: '0 0 15px rgba(255,255,255,0.3)',
+      transition: { type: 'spring', stiffness: 300 }
+    },
+  };
+
+  const buttonVariants = {
+    hover: { scale: 1.05, boxShadow: '0 0 20px rgba(74,222,128,0.7)' },
+    tap: { scale: 0.95 },
+    disabled: { opacity: 0.6, pointerEvents: 'none' }
+  };
+
   return (
-    <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md w-96 fadeIn">
-      <div className="mb-4">
+    <motion.form 
+      onSubmit={handleSubmit} 
+      className="space-y-4 w-full max-w-md"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <motion.div variants={inputVariants} whileFocus="focus">
         <input
           type="text"
           placeholder="Name"
-          className="border p-2 w-full rounded"
+          className="w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 border border-white border-opacity-30 text-white placeholder-gray-300 focus:outline-none focus:border-green-400 transition duration-300"
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
         />
-      </div>
-      <div className="mb-4">
+      </motion.div>
+      <motion.div variants={inputVariants} whileFocus="focus">
         <input
           type="email"
           placeholder="Email"
-          className="border p-2 w-full rounded"
+          className="w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 border border-white border-opacity-30 text-white placeholder-gray-300 focus:outline-none focus:border-green-400 transition duration-300"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-      </div>
-      <div className="mb-4">
+      </motion.div>
+      <motion.div variants={inputVariants} whileFocus="focus">
         <input
           type="password"
           placeholder="Password"
-          className="border p-2 w-full rounded"
+          className="w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 border border-white border-opacity-30 text-white placeholder-gray-300 focus:outline-none focus:border-green-400 transition duration-300"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-      </div>
-      <div className="mb-4">
+      </motion.div>
+      <motion.div variants={inputVariants} whileFocus="focus">
         <input
           type="password"
           placeholder="Confirm Password"
-          className="border p-2 w-full rounded"
+          className="w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 border border-white border-opacity-30 text-white placeholder-gray-300 focus:outline-none focus:border-green-400 transition duration-300"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           required
         />
-      </div>
-      <button
+      </motion.div>
+      <motion.button
         type="submit"
-        className="bg-green-500 text-white p-2 w-full rounded"
+        className="w-full bg-gradient-to-r from-green-400 to-blue-500 text-white py-3 rounded-lg text-lg font-semibold hover:from-green-500 hover:to-blue-600 transition duration-300"
+        variants={buttonVariants}
+        whileHover="hover"
+        whileTap="tap"
         disabled={loading}
+        animate={loading ? "disabled" : ""}
       >
         {loading ? 'Signing Up...' : 'Sign Up'}
-      </button>
+      </motion.button>
 
-      {/* Only display the error message if there is one */}
-      {error && <p className="text-red-500 mt-2 errorFadeIn">{error}</p>}
-    </form>
+      <AnimatePresence>
+        {error && (
+          <motion.p
+            className="text-red-400 text-center mt-4 bg-red-900 bg-opacity-50 p-2 rounded"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            transition={{ duration: 0.3 }}
+          >
+            {error}
+          </motion.p>
+        )}
+      </AnimatePresence>
+    </motion.form>
   );
 };
 

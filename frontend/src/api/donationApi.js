@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 const API_URL = 'http://localhost:5000/api/donations';
-const HISTORY_API_URL = 'http://localhost:5000/api/history';
 
 // Function to post a new donation
 export const postDonation = async (donationData) => {
@@ -11,8 +10,8 @@ export const postDonation = async (donationData) => {
     });
     return response.data;
   } catch (error) {
-    handleError('Donation Post Error', error);
-    throw error;
+    console.error('Donation Post Error:', error.response ? error.response.data : error.message);
+    throw error; // Propagate error for handling in the component
   }
 };
 
@@ -24,7 +23,7 @@ export const getDonations = async () => {
     });
     return response.data;
   } catch (error) {
-    handleError('Error fetching donations', error);
+    console.error('Error fetching donations:', error.response ? error.response.data : error.message);
     throw error;
   }
 };
@@ -39,25 +38,21 @@ export const updateBookingStatus = async (donationId, username) => {
     );
     return response.data;
   } catch (error) {
-    handleError('Error updating booking status', error);
+    console.error('Error updating booking status:', error.response ? error.response.data : error.message);
     throw error;
   }
 };
+// api/donationApi.js
 
-// Function to get donation history
-export const getHistory = async () => {
+// Function to delete a donation
+export const deleteDonation = async (donationId) => {
   try {
-    const response = await axios.get(`${HISTORY_API_URL}`, {
+    const response = await axios.delete(`${API_URL}/delete/${donationId}`, {
       withCredentials: true,
     });
     return response.data;
   } catch (error) {
-    handleError('Error fetching donation history', error);
+    console.error('Error deleting donation:', error);
     throw error;
   }
-};
-
-// Utility function to handle and log errors
-const handleError = (message, error) => {
-  console.error(`${message}:`, error.response ? error.response.data : error.message);
 };

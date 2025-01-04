@@ -77,5 +77,22 @@ router.post('/book', async (req, res) => {
     res.status(500).json({ message: 'Error booking donation' });
   }
 });
+router.delete('/delete/:id', async (req, res) => {
+  const donationId = req.params.id;
+
+  try {
+    // Find and delete the donation by ID
+    const donation = await Donation.findByIdAndDelete(donationId);
+
+    if (!donation) {
+      return res.status(404).json({ message: 'Donation not found' });
+    }
+
+    res.status(200).json({ message: 'Donation deleted successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error deleting donation' });
+  }
+});
 
 module.exports = router;

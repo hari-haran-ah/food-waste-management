@@ -1,8 +1,6 @@
-// api/auth.js
-
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api/auth';
+const API_URL = 'http://localhost:5000/api/auth'; // Replace with your API URL
 
 // SignIn function
 export const signIn = async (data) => {
@@ -30,9 +28,13 @@ export const signUp = async ({ name, email, password, confirmPassword }) => {
     const payload = { name, email, password, confirmPassword };
 
     const response = await axios.post(`${API_URL}/signup`, payload);
-    return response;
+    return response.data;
   } catch (error) {
     console.error('SignUp Error:', error.response ? error.response.data : error.message);
-    throw error; // This will propagate the error for handling in the component
+    if (error.response && error.response.data && error.response.data.message) {
+      throw new Error(error.response.data.message); // Error message from backend
+    } else {
+      throw new Error(error.message); // General error message
+    }
   }
 };

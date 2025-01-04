@@ -1,4 +1,3 @@
-// pages/FoodDetailsPage.jsx
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getDonations, updateBookingStatus } from '../api/donationApi';
@@ -9,7 +8,7 @@ const FoodDetailsPage = () => {
   const [donation, setDonation] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false); 
+  const [showSuccess, setShowSuccess] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,7 +34,6 @@ const FoodDetailsPage = () => {
       setDonation((prev) => ({ ...prev, isBooked: true }));
       setShowConfirmation(false);
       setShowSuccess(true);
-      setTimeout(() => setShowSuccess(false), 3000); 
     } catch (error) {
       console.error('Error booking donation:', error);
       alert('Failed to book donation');
@@ -51,13 +49,15 @@ const FoodDetailsPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-600 p-6">
-      <header className="bg-white text-blue-600 p-4 fixed top-0 left-0 w-full z-10 shadow-md">
-        <div className="flex justify-between items-center px-6">
-        <h1 className="text-3xl text-blue-600 font-bold inline-block flex items-center whitespace-nowrap">FOOD DONATE APP
-        <AppIcon className="inline-block ml-1" /></h1>
+    <div className="min-h-screen bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-600">
+      {/* Header */}
+      <header className="bg-white text-blue-600 p-3 fixed top-0 left-0 w-full z-10 shadow-lg">
+        <div className="flex justify-between items-center px-8">
+          <h1 className="text-4xl font-extrabold">
+            FOOD DONATE APP<AppIcon className="inline-block ml-2" />
+          </h1>
           <button
-            className="text-blue-600 border border-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300"
+            className="text-blue-600 border border-blue-600 px-5 py-3 rounded hover:bg-blue-600 hover:text-white transition duration-300"
             onClick={() => navigate('/booking-food')}
           >
             Back
@@ -65,23 +65,27 @@ const FoodDetailsPage = () => {
         </div>
       </header>
 
-      <div className="mt-20 bg-white p-6 rounded-lg shadow-lg">
-        <h2 className="text-3xl font-bold">{donation.foodName}</h2>
-        <p>Quantity: {donation.quantity}</p>
-        <p>Contact: {donation.phoneNumber}</p>
-        <p>Posted by: {donation.username}</p>
-        <p>Status: {donation.isBooked ? 'Booked' : 'Available'}</p>
+      {/* Content */}
+      <div className="pt-32 px-6 flex justify-center">
+        <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl">
+          <h2 className="text-4xl font-bold mb-4">{donation.foodName}</h2>
+          <p className="text-lg">Quantity: {donation.quantity}</p>
+          <p className="text-lg">Contact: {donation.phoneNumber}</p>
+          <p className="text-lg">Posted by: {donation.username}</p>
+          <p className="text-lg">Status: {donation.isBooked ? 'Booked' : 'Available'}</p>
 
-        {!donation.isBooked && (
-          <button
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg mt-4 hover:bg-blue-700 transition duration-300"
-            onClick={() => setShowConfirmation(true)}
-          >
-            Book This Donation
-          </button>
-        )}
+          {!donation.isBooked && (
+            <button
+              className="bg-blue-600 text-white px-6 py-3 rounded-lg mt-6 hover:bg-blue-700 transition duration-300"
+              onClick={() => setShowConfirmation(true)}
+            >
+              Book This Donation
+            </button>
+          )}
+        </div>
       </div>
 
+      {/* Confirmation Modal */}
       {showConfirmation && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
           <div className="bg-white p-6 rounded-lg animate-fade-in">
@@ -104,13 +108,17 @@ const FoodDetailsPage = () => {
         </div>
       )}
 
+      {/* Success Modal */}
       {showSuccess && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
           <div className="bg-green-500 text-white p-6 rounded-lg animate-fade-in">
             <h3 className="text-xl">Successfully booked the donation!</h3>
             <button
               className="bg-white text-green-500 px-4 py-2 rounded mt-4 hover:bg-green-600 hover:text-white transition"
-              onClick={() => setShowSuccess(false)}
+              onClick={() => {
+                setShowSuccess(false);
+                navigate('/booking-food');
+              }}
             >
               OK
             </button>

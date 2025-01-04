@@ -1,142 +1,38 @@
-/* Tailwind base imports */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Custom Animations */
-
-/* Fade-in animation for page load */
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
-/* Gradient Background Animation */
-@keyframes gradientAnimation {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-/* Utility Classes for Animations */
-.fade-in {
-  animation: fadeIn 1s ease-out forwards;
-}
-
-.bg-gradient-animation {
-  background: linear-gradient(45deg, #ff7e5f, #feb47b, #6a11cb, #2575fc);
-  background-size: 400% 400%;
-  animation: gradientAnimation 15s ease infinite;
-}
-
-/* Adding smooth transition to inputs and buttons */
-input, button {
-  transition: all 0.3s ease-in-out;
-}
-/* Add this to your global CSS or a specific component's CSS file */
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-.fade-in {
-  animation: fadeIn 1s ease-in-out;
-}
-
-/* Fade In Animation */
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Animation for the sign-up form */
-.fadeIn {
-  animation: fadeIn 0.5s ease-out;
-}
-
-/* Animation for the error message */
-.errorFadeIn {
-  animation: fadeIn 0.5s ease-out;
-}
-/* Gradient Animation */
-@keyframes gradientAnimation {
-  0% {
-    background: linear-gradient(45deg, #ff6a00, #ee0979);
-  }
-  50% {
-    background: linear-gradient(45deg, #ff00c3, #0099ff);
-  }
-  100% {
-    background: linear-gradient(45deg, #ff6a00, #ee0979);
-  }
-}
-
-/* Apply the gradient animation */
 .bg-gradient-animate {
-  animation: gradientAnimation 6s ease infinite;
-  background-size: 400% 400%;
-}
-/* Fade Animation */
-.fade-enter {
-  opacity: 0;
-}
-.fade-enter-active {
-  opacity: 1;
-  transition: opacity 300ms;
-}
-.fade-exit {
-  opacity: 1;
-}
-.fade-exit-active {
-  opacity: 0;
-  transition: opacity 300ms;
+  background-size: 200% 200%;
+  animation: gradient 15s ease infinite;
 }
 
-/* Page Not Found Styling */
-.page-not-found-container {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(to right, #ff9a9e, #fad0c4, #fad0c4);
-  text-align: center;
+.text-shadow-glow {
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
 }
 
-.page-not-found-container h1 {
-  animation: pulse 2s infinite;
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
 }
 
 @keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
-  }
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
 }
+
+.animate-pulse-slow {
+  animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
