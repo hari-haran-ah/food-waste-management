@@ -28,19 +28,17 @@ export const getDonations = async () => {
   }
 };
 
-
-export const updateBookingStatus = async (donationId, isBooked) => {
-    try {
-      const response = await axios.post(`${API_URL}/book`, {
-        donationId,
-        isBooked,
-        username: 'User123', // Replace with logged-in username
-      }, {
-        withCredentials: true,
-      });
-      return response.data;
-    } catch (error) {
-      console.error('Error updating booking status:', error);
-      throw error;
-    }
-  };
+// Function to update booking status
+export const updateBookingStatus = async (donationId, username) => {
+  try {
+    const response = await axios.post(
+      `${API_URL}/book`,
+      { donationId, username },
+      { withCredentials: true }
+    );
+    return response.data;
+  } catch (error) {
+    console.error('Error updating booking status:', error);
+    throw error;
+  }
+};

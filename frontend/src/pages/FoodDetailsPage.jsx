@@ -7,7 +7,7 @@ const FoodDetailsPage = () => {
   const [donation, setDonation] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false); // State for success popup
+  const [showSuccess, setShowSuccess] = useState(false); 
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -32,8 +32,8 @@ const FoodDetailsPage = () => {
       await updateBookingStatus(id, true);
       setDonation((prev) => ({ ...prev, isBooked: true }));
       setShowConfirmation(false);
-      setShowSuccess(true); // Show success popup
-      setTimeout(() => setShowSuccess(false), 3000); // Automatically hide after 3 seconds
+      setShowSuccess(true);
+      setTimeout(() => setShowSuccess(false), 3000); 
     } catch (error) {
       console.error('Error booking donation:', error);
       alert('Failed to book donation');
@@ -50,7 +50,6 @@ const FoodDetailsPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-600 p-6">
-      {/* Header */}
       <header className="bg-white text-blue-600 p-4 fixed top-0 left-0 w-full z-10 shadow-md">
         <div className="flex justify-between items-center px-6">
           <h1 className="text-3xl font-bold">FOOD DONATE APP</h1>
@@ -63,7 +62,6 @@ const FoodDetailsPage = () => {
         </div>
       </header>
 
-      {/* Donation Details */}
       <div className="mt-20 bg-white p-6 rounded-lg shadow-lg">
         <h2 className="text-3xl font-bold">{donation.foodName}</h2>
         <p>Quantity: {donation.quantity}</p>
@@ -81,7 +79,6 @@ const FoodDetailsPage = () => {
         )}
       </div>
 
-      {/* Confirmation Popup */}
       {showConfirmation && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
           <div className="bg-white p-6 rounded-lg animate-fade-in">
@@ -104,7 +101,6 @@ const FoodDetailsPage = () => {
         </div>
       )}
 
-      {/* Success Popup */}
       {showSuccess && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
           <div className="bg-green-500 text-white p-6 rounded-lg animate-fade-in">
