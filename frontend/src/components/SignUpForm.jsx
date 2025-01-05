@@ -88,20 +88,6 @@ const SignUpForm = ({ onSignUp, loading, error }) => {
       >
         {loading ? 'Signing Up...' : 'Sign Up'}
       </motion.button>
-
-      <AnimatePresence>
-        {error && (
-          <motion.p
-            className="text-red-400 text-center mt-4 bg-red-900 bg-opacity-50 p-2 rounded"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            transition={{ duration: 0.3 }}
-          >
-            {error}
-          </motion.p>
-        )}
-      </AnimatePresence>
     </motion.form>
   );
 };
