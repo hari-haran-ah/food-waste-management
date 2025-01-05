@@ -1,7 +1,9 @@
+// src/pages/BookingDonationPage.jsx
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getDonations } from '../api/donationApi';
 import AppIcon from '../components/AppIcon';
+import FoodCard from '../components/FoodCard'; // Import FoodCard component
 
 const BookingDonationPage = () => {
   const [donations, setDonations] = useState([]);
@@ -26,17 +28,15 @@ const BookingDonationPage = () => {
   }, []);
 
   if (loading) {
-    return <div>Loading donations...</div>;
+    return <div className="text-center text-lg text-gray-500">Loading donations...</div>;
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-white">
-      <header className="fixed top-0 left-0 w-full z-10 p-4 bg-blue-800">
+    <div className="min-h-screen flex flex-col bg-white">
+      <header className="fixed top-0 left-0 w-full z-10 p-4 bg-blue-800 shadow-md">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <h1 className="text-3xl font-bold text-white flex items-center space-x-2">
-            <h1 className="text-3xl font-bold text-white">
-              FOOD DONATE APP
-            </h1>
+            <span>FOOD DONATE APP</span>
             <AppIcon className="inline-block ml-2 animate-pulse-slow" />
           </h1>
           <div className="flex space-x-4">
@@ -56,25 +56,22 @@ const BookingDonationPage = () => {
         </div>
       </header>
 
-      <h2 className="text-3xl text-blue-800 font-semibold mb-4 mt-20">Available Donations</h2>
-      <div className="space-y-4">
-        {donations.map((donation) => (
-          <div
-            key={donation._id}
-            className="bg-white p-4 rounded-lg shadow-md opacity-100"
-          >
-            <h3 className="text-xl font-medium">
-              <Link to={`/donation/${donation._id}`} className="text-blue-500 hover:underline">
-                {donation.foodName}
-              </Link>
-            </h3>
-            <p>Quantity: {donation.quantity}</p>
-            <p>Contact: {donation.phoneNumber}</p>
-            <p>Posted by: {donation.username}</p>
-            <p>Status: Available</p>
-          </div>
-        ))}
-      </div>
+      <main className="mt-24 px-4">
+        <h2 className="text-3xl text-blue-800 font-semibold mb-6">Available Donations</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {donations.map((donation) => (
+            <FoodCard
+              key={donation._id}
+              foodName={donation.foodName}
+              quantity={donation.quantity}
+              phoneNumber={donation.phoneNumber}
+              username={donation.username}
+              isBooked={donation.isBooked}
+              onDelete={() => console.log('Delete donation')}
+            />
+          ))}
+        </div>
+      </main>
     </div>
   );
 };
