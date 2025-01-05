@@ -6,15 +6,15 @@ const HistoryList = ({ historyData }) => {
     <div>
       {historyData.length > 0 ? (
         historyData.map((item) => (
-          <div key={item._id} className="p-4 bg-gray-100 mb-4 rounded-md">
-            <h3 className="font-semibold text-xl">{item.foodName}</h3>
-            <p>Quantity: {item.quantity}</p>
-            <p>Posted by: {item.username}</p>
-            <p>Status: {item.isBooked ? 'Booked' : 'Available'}</p>
+          <div key={item._id} className="p-6 bg-white shadow-md rounded-md mb-6">
+            <h3 className="font-semibold text-xl text-blue-600">{item.foodName}</h3>
+            <p className="text-gray-600">Quantity: {item.quantity}</p>
+            <p className="text-gray-600">Posted by: {item.username}</p>
+            <p className="text-gray-600">Status: {item.isBooked ? 'Booked' : 'Available'}</p>
           </div>
         ))
       ) : (
-        <p>No donation history available.</p>
+        <p className="text-gray-500">No donation history available.</p>
       )}
     </div>
   );

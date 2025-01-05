@@ -49,15 +49,15 @@ const FoodDetailsPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-600">
-      {/* Header */}
-      <header className="bg-white text-blue-600 p-3 fixed top-0 left-0 w-full z-10 shadow-lg">
-        <div className="flex justify-between items-center px-8">
-          <h1 className="text-4xl font-extrabold">
-            FOOD DONATE APP<AppIcon className="inline-block ml-2" />
+    <div className="min-h-screen bg-white">
+      <header className="fixed top-0 left-0 w-full z-10 p-4 bg-blue-800">
+        <div className="max-w-7xl mx-auto flex justify-between items-center">
+          <h1 className="text-4xl font-extrabold text-white flex items-center space-x-2">
+            FOOD DONATE APP
+            <AppIcon className="inline-block ml-2 animate-pulse-slow" />
           </h1>
           <button
-            className="text-blue-600 border border-blue-600 px-5 py-3 rounded hover:bg-blue-600 hover:text-white transition duration-300"
+            className="text-white border-2 border-white px-5 py-3 rounded hover:bg-white hover:text-blue-800 transition duration-300"
             onClick={() => navigate('/booking-food')}
           >
             Back
@@ -65,7 +65,6 @@ const FoodDetailsPage = () => {
         </div>
       </header>
 
-      {/* Content */}
       <div className="pt-32 px-6 flex justify-center">
         <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl">
           <h2 className="text-4xl font-bold mb-4">{donation.foodName}</h2>
@@ -85,7 +84,6 @@ const FoodDetailsPage = () => {
         </div>
       </div>
 
-      {/* Confirmation Modal */}
       {showConfirmation && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
           <div className="bg-white p-6 rounded-lg animate-fade-in">
@@ -108,7 +106,6 @@ const FoodDetailsPage = () => {
         </div>
       )}
 
-      {/* Success Modal */}
       {showSuccess && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
           <div className="bg-green-500 text-white p-6 rounded-lg animate-fade-in">

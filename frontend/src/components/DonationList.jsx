@@ -32,32 +32,32 @@ const DonationList = () => {
       console.error('Failed to book donation', error);
     }
   };
-  };
 
   if (loading) {
-    return <div>Loading donations...</div>;
+    return <div className="text-center text-lg text-gray-500">Loading donations...</div>;
   }
 
   return (
-    <div>
-      {donations.map(donation => (
-        <div key={donation._id} className="p-4 bg-gray-100 mb-4 rounded-md">
-          <h3 className="font-semibold text-xl">{donation.foodName}</h3>
-          <p>{donation.quantity} units</p>
-          <p>Contact: {donation.phoneNumber}</p>
-          <p>Posted by: {donation.username}</p>
-          <label>
+    <div className="space-y-6">
+      {donations.map((donation) => (
+        <div key={donation._id} className="p-6 bg-white shadow-md rounded-md">
+          <h3 className="font-semibold text-xl text-blue-600">{donation.foodName}</h3>
+          <p className="text-gray-600">{donation.quantity} units</p>
+          <p className="text-gray-600">Contact: {donation.phoneNumber}</p>
+          <p className="text-gray-600">Posted by: {donation.username}</p>
+          <div className="flex items-center">
             <input
               type="checkbox"
               checked={donation.isBooked}
               onChange={() => handleBookingChange(donation._id, donation.isBooked)}
+              className="mr-2"
             />
-            Book Donation
-          </label>
+            <span className="text-gray-600">{donation.isBooked ? 'Booked' : 'Available'}</span>
+          </div>
         </div>
       ))}
     </div>
   );
-
+};
 
 export default DonationList;

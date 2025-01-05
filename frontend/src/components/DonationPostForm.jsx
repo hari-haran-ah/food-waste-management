@@ -1,56 +1,51 @@
-// components/DonationPostForm.jsx
 import React from 'react';
 
 const DonationPostForm = ({ donationDetails, setDonationDetails, handleFormSubmit }) => {
   return (
-    <form onSubmit={handleFormSubmit} className="bg-white p-6 rounded-lg shadow-lg w-96 mt-12">
-      <div className="mb-4">
-        <label htmlFor="foodName" className="block text-lg font-medium mb-2">Food Name</label>
+    <form onSubmit={handleFormSubmit} className="space-y-4">
+      <div>
         <input
           type="text"
-          id="foodName"
+          placeholder="Food Name"
           value={donationDetails.foodName || ''}
           onChange={(e) => setDonationDetails({ ...donationDetails, foodName: e.target.value })}
-          className="w-full p-3 border border-gray-300 rounded-lg"
+          className="w-full px-4 py-3 rounded border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none"
           required
         />
       </div>
-      <div className="mb-4">
-        <label htmlFor="quantity" className="block text-lg font-medium mb-2">Quantity</label>
+      <div>
         <input
           type="text"
-          id="quantity"
+          placeholder="Quantity"
           value={donationDetails.quantity || ''}
           onChange={(e) => setDonationDetails({ ...donationDetails, quantity: e.target.value })}
-          className="w-full p-3 border border-gray-300 rounded-lg"
+          className="w-full px-4 py-3 rounded border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none"
           required
         />
       </div>
-      <div className="mb-4">
-        <label htmlFor="phoneNumber" className="block text-lg font-medium mb-2">Phone Number</label>
+      <div>
         <input
           type="text"
-          id="phoneNumber"
+          placeholder="Phone Number"
           value={donationDetails.phoneNumber || ''}
           onChange={(e) => setDonationDetails({ ...donationDetails, phoneNumber: e.target.value })}
-          className="w-full p-3 border border-gray-300 rounded-lg"
+          className="w-full px-4 py-3 rounded border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none"
           required
         />
       </div>
-      <div className="mb-4">
-        <label htmlFor="username" className="block text-lg font-medium mb-2">Your Username</label>
+      <div>
         <input
           type="text"
-          id="username"
+          placeholder="Your Username"
           value={donationDetails.username || ''}
           onChange={(e) => setDonationDetails({ ...donationDetails, username: e.target.value })}
-          className="w-full p-3 border border-gray-300 rounded-lg"
+          className="w-full px-4 py-3 rounded border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none"
           required
         />
       </div>
       <button
         type="submit"
-        className="bg-blue-600 text-white px-6 py-3 rounded-lg w-full hover:bg-blue-700 transition duration-300"
+        className="w-full py-3 rounded-lg text-white font-semibold transition duration-300 bg-blue-600 hover:bg-blue-700"
       >
         Post Donation
       </button>

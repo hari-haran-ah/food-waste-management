@@ -14,7 +14,7 @@ const DonationFoodPage = () => {
     username: '',
   });
   const [error, setError] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false); // To manage pop-up modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
@@ -26,29 +26,33 @@ const DonationFoodPage = () => {
         phoneNumber: '',
         username: '',
       });
-      setIsModalOpen(true); // Show success modal
+      setIsModalOpen(true);
     } catch (error) {
       setError('Failed to post donation. Please try again.');
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-600 flex flex-col items-center justify-center">
-      <header className="bg-white text-blue-600 p-4 fixed top-0 left-0 w-full z-10 shadow-md">
-        <div className="flex justify-between items-center px-6">
-          <h1 className="text-3xl font-bold">FOOD DONATE APP<AppIcon className="inline-block ml-1" /></h1>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-white">
+      <header className="fixed top-0 left-0 w-full z-10 p-4 bg-blue-800">
+        <div className="max-w-7xl mx-auto flex justify-between items-center">
+          <h1 className="text-3xl font-bold text-white flex items-center space-x-2">
+            <h1 className="text-3xl font-bold text-white">FOOD DONATE APP</h1>
+            <AppIcon className="inline-block ml-2 animate-pulse-slow" />
+          </h1>
           <button
-            className="text-blue-600 border border-blue-600 px-4 py-2 rounded hover:bg-blue-600 hover:text-white transition duration-300"
             onClick={() => navigate('/home')}
+            className="bg-transparent border-2 border-white text-white py-2 px-6 rounded-lg text-sm font-semibold hover:bg-white hover:text-blue-800 transition duration-300"
           >
             Home
           </button>
         </div>
       </header>
 
-      <div className="flex flex-col items-center justify-center flex-grow pt-20 pb-10">
-        <h2 className="text-3xl font-semibold text-white mb-2">Post a Donation</h2>
-        {error && <div className="text-red-500 mb-4">{error}</div>}
+      <br />
+      <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-lg">
+        <h2 className="text-2xl font-bold text-center mb-6 text-blue-800">Post a Donation</h2>
+        {error && <p className="text-red-600 text-center mt-4 bg-red-100 p-2 rounded">{error}</p>}
         <DonationPostForm
           donationDetails={donationDetails}
           setDonationDetails={setDonationDetails}
@@ -56,7 +60,6 @@ const DonationFoodPage = () => {
         />
       </div>
 
-      {/* Animated Modal Popup */}
       <AnimatePresence>
         {isModalOpen && (
           <motion.div
@@ -82,7 +85,7 @@ const DonationFoodPage = () => {
                 whileTap={{ scale: 0.9 }}
                 onClick={() => {
                   setIsModalOpen(false);
-                  navigate('/donating-food'); // Navigate back to home after closing the modal
+                  navigate('/donating-food');
                 }}
               >
                 OK
