@@ -102,6 +102,8 @@ const SignUpPage = () => {
           <motion.button
             onClick={() => navigate('/')}
             className="bg-transparent border-2 border-white text-white py-2 px-6 rounded-full text-lg font-semibold hover:bg-white hover:text-blue-600 transition duration-300"
+            whileHover={{ scale: 1.05, boxShadow: '0 0 15px rgba(255,255,255,0.5)' }}
+            whileTap={{ scale: 0.95 }}
           >
             Sign In
           </motion.button>

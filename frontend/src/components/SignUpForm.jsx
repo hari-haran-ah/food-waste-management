@@ -98,7 +98,7 @@ const SignUpForm = ({ onSignUp, loading, error }) => {
             exit={{ opacity: 0, y: 10 }}
             transition={{ duration: 0.3 }}
           >
-            {error}
+            
           </motion.p>
         )}
       </AnimatePresence>
