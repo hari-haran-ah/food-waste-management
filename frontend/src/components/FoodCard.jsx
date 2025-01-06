@@ -24,7 +24,6 @@ const FoodCard = ({ foodName, quantity, phoneNumber, username, isBooked, onBook 
         <p className="text-gray-600">Quantity: {quantity}</p>
         <p className="text-gray-600">Contact: {phoneNumber}</p>
         <p className="text-gray-600">Posted by: {username}</p>
-        {/* Update the status text color */}
         <p className={`text-gray-600 font-semibold ${isBooked ? 'text-green-600' : 'text-green-600'}`}>
           Status: {isBooked ? 'Booked' : 'Available'}
         </p>
