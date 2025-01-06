@@ -1,4 +1,3 @@
-// src/pages/HistoryPage.jsx
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getDonations, deleteDonation } from '../api/donationApi';
@@ -61,9 +60,9 @@ const HistoryPage = () => {
       <header className="bg-blue-800 p-4 w-full z-10 fixed top-0 left-0">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <h1 className="text-3xl font-bold text-white flex items-center space-x-2">
-          <h1 className="text-3xl font-bold text-white">
-            FOOD DONATE APP
-          </h1>
+            <h1 className="text-3xl font-bold text-white">
+              FOOD DONATE APP
+            </h1>
             <AppIcon className="inline-block ml-2 animate-pulse-slow" />
           </h1>
           <div className="flex space-x-4">
@@ -78,13 +77,13 @@ const HistoryPage = () => {
       </header>
 
       {/* Content */}
-      <div className="pt-24 px-6 w-full max-w-7xl">
+      <div className="px-6 w-full max-w-7xl pt-24 mb-40"> {/* Increased padding to account for fixed header */}
         <h2 className="text-3xl text-blue-800 font-semibold mb-6">Donation History</h2>
         {history.length === 0 ? (
           <motion.p
             className="text-gray-600 text-xl"
             initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+            animate={{ opacity:  1 }}
           >
             No history available
           </motion.p>
@@ -119,17 +118,17 @@ const HistoryPage = () => {
                   <p className="text-gray-600">Quantity: {donation.quantity}</p>
                   <p className="text-gray-600">Contact: {donation.phoneNumber}</p>
                   <p className="text-gray-600">Posted by: {donation.username}</p>
-                  <p className={`text-gray-600 font-semibold ${donation.isBooked ? 'text-green-600' : 'text-green-600'}`}>
+                  <p className={`text-gray-600 font-semibold ${donation.isBooked ? 'text-green-600' : 'text-red-600'}`}>
                     Status: {donation.isBooked ? 'Booked' : 'Available'}
                   </p>
                 </div>
                 <div>
-                <button
-                  className="bg-red-600 text-white px-4 py-2 rounded mt-4 hover:bg-red-700 w-full "
-                  onClick={() => handleDeleteClick(donation)}
-                >
-                  Delete
-                </button>
+                  <button
+                    className="bg-red-600 text-white px-4 py-2 rounded mt-4 hover:bg-red-700 w-full "
+                    onClick={() => handleDeleteClick(donation)}
+                  >
+                    Delete
+                  </button>
                 </div>
               </motion.div>
             ))}
@@ -192,6 +191,3 @@ const HistoryPage = () => {
 };
 
 export default HistoryPage;
-
-
-
