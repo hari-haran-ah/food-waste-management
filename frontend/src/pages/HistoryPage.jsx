@@ -178,7 +178,7 @@ const HistoryPage = () => {
                 Donation deleted successfully!
               </h3>
               <button
-                className="bg-green-600 text-white px-4 py-2 rounded mt-4"
+                className="bg-green-600 text-white px-2 py-1 rounded mt-4"
                 onClick={() => setIsDeleted(false)}
               >
                 OK
