@@ -14,9 +14,9 @@ connectDB();
 
 // Middlewares
 app.use(cors({
-  origin: 'http://localhost:5173',
-  methods: ['GET', 'POST', 'DELETE'], // Add DELETE method here
-  credentials: true,  // Allow cookies to be sent
+  origin: 'http://localhost:5173',  // URL of your frontend
+  methods: ['GET', 'POST', 'PATCH', 'DELETE'], // Ensure all required methods are allowed
+  credentials: true,  // Allow sending cookies (JWT)
 }));
 app.use(express.json());
 app.use(cookieParser());

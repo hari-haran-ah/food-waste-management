@@ -7,7 +7,7 @@ import SignInPage from './pages/SignInPage';
 import SignUpPage from './pages/SignUpPage';
 import DonatingFoodPage from './pages/DonatingFoodPage'; 
 import BookingFoodPage from './pages/BookingFoodPage'; 
-import FoodDetailsPage from './pages/FoodDetailsPage';
+
 import PrivateRoute from './components/PrivateRoute'; 
 import HistoryPage from './pages/HistoryPage/';
 import About from './pages/About';
@@ -36,7 +36,7 @@ const App = () => {
               <Route path="/home" element={<PrivateRoute element={<HomePage />} />} />
               <Route path="/donating-food" element={<PrivateRoute element={<DonatingFoodPage />} />} />
               <Route path="/booking-food" element={<PrivateRoute element={<BookingFoodPage />} />} />
-              <Route path="/donation/:id" element={<PrivateRoute element={<FoodDetailsPage />} />} />
+              
               <Route path="/History" element={<PrivateRoute element={<HistoryPage />} />} />
               <Route path="/about" element={<PrivateRoute element={<About />} />} />
 

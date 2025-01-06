@@ -1,7 +1,6 @@
-// src/components/FoodCard.jsx
 import React from 'react';
 
-const FoodCard = ({ foodName, quantity, phoneNumber, username, isBooked, onDelete }) => {
+const FoodCard = ({ foodName, quantity, phoneNumber, username, isBooked, onBook }) => {
   return (
     <div className="bg-white p-6 rounded-lg shadow-md flex flex-col space-y-4 w-full">
       <div className="flex items-center justify-between w-full">
@@ -25,11 +24,19 @@ const FoodCard = ({ foodName, quantity, phoneNumber, username, isBooked, onDelet
         <p className="text-gray-600">Quantity: {quantity}</p>
         <p className="text-gray-600">Contact: {phoneNumber}</p>
         <p className="text-gray-600">Posted by: {username}</p>
+        {/* Update the status text color */}
         <p className={`text-gray-600 font-semibold ${isBooked ? 'text-green-600' : 'text-green-600'}`}>
           Status: {isBooked ? 'Booked' : 'Available'}
         </p>
       </div>
-    
+      {!isBooked && (
+        <button
+          onClick={onBook}
+          className="bg-blue-600 text-white px-2 py-2 rounded hover:bg-blue-700 mt-4"
+        >
+          Book
+        </button>
+      )}
     </div>
   );
 };

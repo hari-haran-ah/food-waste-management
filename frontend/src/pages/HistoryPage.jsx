@@ -66,9 +66,9 @@ const HistoryPage = () => {
           </h1>
           <button
             className="text-white border-2 border-white px-5 py-3 rounded hover:bg-white hover:text-blue-800 transition duration-300"
-            onClick={() => navigate('/home')}
+            onClick={() => navigate('/booking-food')}
           >
-            Home
+            Back
           </button>
         </div>
       </header>
