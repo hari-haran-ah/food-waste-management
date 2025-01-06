@@ -15,18 +15,24 @@ const DonationFoodPage = () => {
   });
   const [error, setError] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false); // State for the confirmation modal
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+    setIsConfirmModalOpen(true); // Open the confirmation modal
+  };
+
+  const handleConfirmDonation = async () => {
     try {
-      await postDonation(donationDetails);
+      await postDonation(donationDetails); // Post the donation
       setDonationDetails({
         foodName: '',
         quantity: '',
         phoneNumber: '',
         username: '',
       });
-      setIsModalOpen(true);
+      setIsConfirmModalOpen(false); // Close the confirmation modal
+      setIsModalOpen(true); // Open the success modal
     } catch (error) {
       setError('Failed to post donation. Please try again.');
     }
@@ -37,7 +43,7 @@ const DonationFoodPage = () => {
       <header className="fixed top-0 left-0 w-full z-10 p-4 bg-blue-800">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <h1 className="text-3xl font-bold text-white flex items-center space-x-2">
-            <h1 className="text-3xl font-bold text-white">FOOD DONATE APP</h1>
+            <span>FOOD DONATE APP</span>
             <AppIcon className="inline-block ml-2 animate-pulse-slow" />
           </h1>
           <button
@@ -60,6 +66,49 @@ const DonationFoodPage = () => {
         />
       </div>
 
+      {/* Confirmation Modal */}
+      <AnimatePresence>
+        {isConfirmModalOpen && (
+          <motion.div
+            className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div
+              className="bg-white p-6 rounded-lg shadow-lg"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
+            >
+              <h3 className="text-xl font-bold text-center text-blue-800">
+                Are you sure you want to post this food?
+              </h3>
+              <div className="flex justify-between mt-4">
+                <motion.button
+                  className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setIsConfirmModalOpen(false)} // Close the confirmation modal without posting
+                >
+                  Cancel
+                </motion.button>
+                <motion.button
+                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={handleConfirmDonation} // Confirm and post the donation
+                >
+                  Confirm
+                </motion.button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Success Modal */}
       <AnimatePresence>
         {isModalOpen && (
           <motion.div
