@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getDonations } from '../api/donationApi';
 import AppIcon from '../components/AppIcon';
-import FoodCard from '../components/FoodCard'; // Import FoodCard component
+import FoodCard from '../components/FoodCard'; 
 
 const BookingDonationPage = () => {
   const [donations, setDonations] = useState([]);
