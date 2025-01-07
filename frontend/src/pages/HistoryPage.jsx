@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useCallback } from 'react';
+// src/pages/HistoryPage.jsx
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getDonations, deleteDonation } from '../api/donationApi';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -10,7 +11,6 @@ const HistoryPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleted, setIsDeleted] = useState(false);
   const [selectedDonation, setSelectedDonation] = useState(null);
-  const [modalWidth, setModalWidth] = useState('max-w-md'); // Modal width state
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -40,59 +40,30 @@ const HistoryPage = () => {
       await deleteDonation(selectedDonation._id);
       setIsDeleted(true);
       setHistory(history.filter((donation) => donation._id !== selectedDonation._id));
-      setModalWidth('max-w-sm'); // Reduce the width after confirmation
       setTimeout(() => {
         setIsModalOpen(false);
-        setIsDeleted(false);
-      }, 1000);
+      }, 1000); // Delay closing the modal for 1 second
     } catch (error) {
       console.error('Error deleting donation:', error);
       alert('Failed to delete donation');
     }
   };
-
-  const handleKeyPress = useCallback(
-    (event) => {
-      if (event.key === 'Enter' && isModalOpen && !isDeleted) {
-        handleDeleteConfirm();  // Trigger confirm action on Enter key
-      }
-    },
-    [isModalOpen, isDeleted]
-  );
-
-  useEffect(() => {
-    // Add event listener for "Enter" key
-    window.addEventListener('keydown', handleKeyPress);
-
-    // Clean up event listener on component unmount
-    return () => {
-      window.removeEventListener('keydown', handleKeyPress);
-    };
-  }, [handleKeyPress]);
-
-  const handleOkClick = () => {
-    setIsDeleted(false);
-    setIsModalOpen(false);
-    navigate('/history'); // Navigate to the history page after clicking "OK"
+  
+  const handleDeleteSuccess = () => {
+    setIsDeleted(false); // Reset deleted state after clicking "OK"
   };
-
-  useEffect(() => {
-    // Reset modal state on page refresh or reload
-    setIsModalOpen(false);
-    setIsDeleted(false);
-  }, []);
 
   if (loading) {
     return <div>Loading history...</div>;
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-start bg-gray-100 pt-24">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100">
       {/* Header */}
       <header className="bg-blue-800 p-4 w-full z-10 fixed top-0 left-0">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <h1 className="text-3xl font-bold text-white flex items-center space-x-2">
-            <span>FOOD DONATE APP</span>
+            FOOD DONATE APP
             <AppIcon className="inline-block ml-2 animate-pulse-slow" />
           </h1>
           <div className="flex space-x-4">
@@ -107,48 +78,51 @@ const HistoryPage = () => {
       </header>
 
       {/* Content */}
-      <div className="w-full max-w-7xl px-6 py-6 mt-24">
+      <div className="pt-24 px-6 w-full max-w-7xl mb-96">
         <h2 className="text-3xl text-blue-800 font-semibold mb-6">Donation History</h2>
         {history.length === 0 ? (
-          <motion.p
-            className="text-gray-600 text-xl"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-          >
-            No history available
-          </motion.p>
+          <p className="text-center text-lg text-gray-500 mb-6">No History Available.</p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {history.map((donation) => (
               <motion.div
                 key={donation._id}
-                className="bg-white p-4 rounded-lg shadow-md relative"
+                className="bg-white p-4 rounded-lg shadow-md"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
               >
-                {/* Food Name on Top-Left */}
-                <span className="absolute top-2 left-2 text-blue-800 text-sm font-bold">
-                  {donation.foodName}
-                </span>
-                <div className="flex flex-col items-start w-full space-y-2 mt-6">
+                <div className="flex items-center justify-between w-full">
+                  <h3 className="text-xl font-medium text-blue-800">{donation.foodName}</h3>
+                  {/* SVG Icon */}
+                  <svg
+                    width="50px"
+                    height="50px"
+                    viewBox="0 0 1024 1024"
+                    className="icon"
+                    version="1.1"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M359.8 368.7c-83.5 37-150 103.4-187.1 186.9-5.6 12.6 0.1 27.3 12.7 32.9 3.3 1.5 6.7 2.2 10.1 2.2 9.6 0 18.7-5.5 22.8-14.8 32.1-72.2 89.5-129.6 161.7-161.6 12.6-5.6 18.3-20.3 12.7-32.9-5.5-12.6-20.3-18.3-32.9-12.7z m214.6-108.5c7.2-11.8 11.6-25.5 11.6-40.3 0-42.8-34.7-77.4-77.4-77.4-42.8 0-77.4 34.7-77.4 77.4 0 14.8 4.4 28.6 11.6 40.3-216.7 31.9-383.5 219-383.5 444.4v54.1c0 13.8 11.2 25 25 25H933c13.8 0 25-11.2 25-25v-54.1c-0.1-225.4-167-412.4-383.6-444.4zM908 733.7H109.2v-29.1c0-220.2 179.2-399.3 399.4-399.3S908 484.4 908 704.6v29.1z m24.9 100.2H84.2c-13.8 0-25 11.2-25 25s11.2 25 25 25h848.7c13.8 0 25-11.2 25-25s-11.2-25-25-25z"
+                      fill="#FCA128"
+                    />
+                  </svg>
+                </div>
+                <div className="flex flex-col items-start w-full space-y-2">
                   <p className="text-gray-600">Quantity: {donation.quantity}</p>
                   <p className="text-gray-600">Contact: {donation.phoneNumber}</p>
                   <p className="text-gray-600">Posted by: {donation.username}</p>
-                  <p
-                    className={`text-gray-600 font-semibold ${donation.isBooked ? 'text-green-600' : 'text-red-600'}`}
-                  >
+                  <p className={`text-gray-600 font-semibold ${donation.isBooked ? 'text-green-600' : 'text-red-600'}`}>
                     Status: {donation.isBooked ? 'Booked' : 'Available'}
                   </p>
                 </div>
-                <div className="mt-4">
-                  <button
-                    className="bg-red-600 text-white px-4 py-2 rounded mt-4 hover:bg-red-700 w-full"
-                    onClick={() => handleDeleteClick(donation)}
-                  >
-                    Delete
-                  </button>
-                </div>
+                <button
+                  className="bg-red-600 text-white px-4 py-2 rounded mt-4 hover:bg-red-700 w-full"
+                  onClick={() => handleDeleteClick(donation)}
+                >
+                  Delete
+                </button>
               </motion.div>
             ))}
           </div>
@@ -159,27 +133,23 @@ const HistoryPage = () => {
       <AnimatePresence>
         {isModalOpen && !isDeleted && (
           <motion.div
-            className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-20"
+            className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <div className={`${modalWidth} bg-white p-8 rounded-xl shadow-lg transform scale-95 transition-all duration-300 ease-in-out`}>
-              <h3 className="text-2xl text-blue-800 font-semibold text-center mb-4">
-                Are you sure you want to delete?
-              </h3>
-              <p className="text-gray-800 text-center mb-6">
-                This action cannot be undone.
-              </p>
-              <div className="flex justify-between gap-4">
+            <div className="bg-white p-6 rounded-lg shadow-lg">
+              <h3 className="text-xl font-bold text-red-600 text-center">Confirm Delete</h3>
+              <p className="text-center mt-2">This action cannot be undone.</p>
+              <div className="flex justify-center mt-4">
                 <button
-                  className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-300 w-full"
+                  className="bg-gray-600 text-white px-4 py-2 rounded mr-4"
                   onClick={() => setIsModalOpen(false)}
                 >
                   Cancel
                 </button>
                 <button
-                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300 w-full"
+                  className="bg-red-600 text-white px-4 py-2 rounded"
                   onClick={handleDeleteConfirm}
                 >
                   Confirm
@@ -188,27 +158,27 @@ const HistoryPage = () => {
             </div>
           </motion.div>
         )}
-
         {isDeleted && (
-          <motion.div
-            className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-20"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
-            <div className="bg-white p-8 rounded-xl shadow-lg max-w-sm w-full transform scale-95 transition-all duration-300 ease-in-out">
-              <h3 className="text-2xl text-green-600 font-semibold text-center mb-4">
-                Donation Deleted Successfully!
-              </h3>
-              <button
-                className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition duration-300 w-full"
-                onClick={handleOkClick} // Navigate to history page after clicking "OK"
-              >
-                OK
-              </button>
-            </div>
-          </motion.div>
-        )}
+  <motion.div
+    className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+  >
+    <div className="bg-white p-6 rounded-lg shadow-lg">
+      <h3 className="text-xl font-bold text-green-600 text-center">
+        Donation deleted successfully!
+      </h3>
+      <button
+        className="bg-green-600 text-white px-2 py-1 rounded mt-4"
+        onClick={handleDeleteSuccess}
+      >
+        OK
+      </button>
+    </div>
+  </motion.div>
+)}
+
       </AnimatePresence>
     </div>
   );
