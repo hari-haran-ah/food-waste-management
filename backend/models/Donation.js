@@ -8,6 +8,7 @@ const donationSchema = new mongoose.Schema({
   username: { type: String, required: true },
   isBooked: { type: Boolean, default: false },
   bookedBy: { type: String, default: null },
+  location: { type: String, required: true },
 }, { timestamps: true });
 
 // Create and export the Donation model

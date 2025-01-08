@@ -36,7 +36,17 @@ const DonationPostForm = ({ donationDetails, setDonationDetails, handleFormSubmi
       <div>
         <input
           type="text"
-          placeholder="Your Username"
+          placeholder="Location"
+          value={donationDetails.location || ''}
+          onChange={(e) => setDonationDetails({ ...donationDetails, location: e.target.value })}
+          className="w-full px-4 py-3 rounded border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          required
+        />
+      </div>
+      <div>
+        <input
+          type="text"
+          placeholder="Username"
           value={donationDetails.username || ''}
           onChange={(e) => setDonationDetails({ ...donationDetails, username: e.target.value })}
           className="w-full px-4 py-3 rounded border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none"

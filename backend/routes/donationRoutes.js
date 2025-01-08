@@ -4,9 +4,9 @@ const router = express.Router();
 
 // POST route to create a donation
 router.post('/create', async (req, res) => {
-  const { foodName, quantity, phoneNumber, username } = req.body;
+  const { foodName, quantity, phoneNumber, username, location } = req.body;
 
-  if (!foodName || !quantity || !phoneNumber || !username) {
+  if (!foodName || !quantity || !phoneNumber || !username || !location) {
     return res.status(400).json({ message: 'All fields are required.' });
   }
 
@@ -16,6 +16,7 @@ router.post('/create', async (req, res) => {
       quantity,
       phoneNumber,
       username,
+      location,
       isBooked: false, // Default status is false (available)
     });
 

@@ -29,6 +29,7 @@ const DonationFoodPage = () => {
         foodName: '',
         quantity: '',
         phoneNumber: '',
+        location: '',
         username: '',
       });
       setIsConfirmModalOpen(false); // Close the confirmation modal

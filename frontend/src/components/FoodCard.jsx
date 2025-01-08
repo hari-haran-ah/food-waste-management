@@ -1,6 +1,6 @@
 import React from 'react';
 
-const FoodCard = ({ foodName, quantity, phoneNumber, username, isBooked, onBook }) => {
+const FoodCard = ({ foodName, quantity, phoneNumber, location, username,  isBooked, onBook }) => {
   return (
     <div className="bg-white p-6 rounded-lg shadow-md flex flex-col space-y-4 w-full">
       <div className="flex items-center justify-between w-full">
@@ -23,6 +23,7 @@ const FoodCard = ({ foodName, quantity, phoneNumber, username, isBooked, onBook 
       <div className="flex flex-col items-start w-full space-y-2">
         <p className="text-gray-600">Quantity: {quantity}</p>
         <p className="text-gray-600">Contact: {phoneNumber}</p>
+        <p className="text-gray-600">Location: {location}</p>
         <p className="text-gray-600">Posted by: {username}</p>
         <p className={`text-gray-600 font-semibold ${isBooked ? 'text-green-600' : 'text-green-600'}`}>
           Status: {isBooked ? 'Booked' : 'Available'}

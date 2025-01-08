@@ -9,6 +9,7 @@ const HistoryList = ({ historyData }) => {
           <div key={item._id} className="p-6 bg-white shadow-md rounded-md mb-6">
             <h3 className="font-semibold text-xl text-blue-600">{item.foodName}</h3>
             <p className="text-gray-600">Quantity: {item.quantity}</p>
+            <p className="text-gray-600">Location: {item.location}</p>
             <p className="text-gray-600">Posted by: {item.username}</p>
             <p className="text-gray-600">Status: {item.isBooked ? 'Booked' : 'Available'}</p>
           </div>

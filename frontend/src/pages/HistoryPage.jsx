@@ -112,6 +112,7 @@ const HistoryPage = () => {
                 <div className="flex flex-col items-start w-full space-y-2">
                   <p className="text-gray-600">Quantity: {donation.quantity}</p>
                   <p className="text-gray-600">Contact: {donation.phoneNumber}</p>
+                  <p className="text-gray-600">Location: {donation.location}</p>
                   <p className="text-gray-600">Posted by: {donation.username}</p>
                   <p className={`text-gray-600 font-semibold ${donation.isBooked ? 'text-green-600' : 'text-red-600'}`}>
                     Status: {donation.isBooked ? 'Booked' : 'Available'}

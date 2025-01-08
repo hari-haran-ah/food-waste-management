@@ -116,6 +116,7 @@ const BookingDonationPage = () => {
                 foodName={donation.foodName}
                 quantity={donation.quantity}
                 phoneNumber={donation.phoneNumber}
+                location={donation.location}
                 username={donation.username}
                 isBooked={donation.isBooked}
                 onBook={() => handleBooking(donation._id)} // Pass the booking function
