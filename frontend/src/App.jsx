@@ -1,25 +1,38 @@
-//App.jsx
 import { useRef } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import HomePage from './pages/HomePage';
 import SignInPage from './pages/SignInPage';
 import SignUpPage from './pages/SignUpPage';
-import DonatingFoodPage from './pages/DonatingFoodPage'; 
-import BookingFoodPage from './pages/BookingFoodPage'; 
+import DonatingFoodPage from './pages/DonatingFoodPage';
+import BookingFoodPage from './pages/BookingFoodPage';
 import Footer from './components/Footer';
 
-import PrivateRoute from './components/PrivateRoute'; 
-import HistoryPage from './pages/HistoryPage/';
+import PrivateRoute from './components/PrivateRoute';
+import HistoryPage from './pages/HistoryPage';
 import About from './pages/About';
-import { AuthProvider } from './context/AuthContext'; // Wrap in AuthContext provider for global state
+import { AuthProvider } from './context/AuthContext';
 
 const App = () => {
   const location = useLocation();
   const nodeRef = useRef(null);
 
+  // Define the paths where Footer should be displayed
+  const showFooterRoutes = [
+    '/',
+    '/signup',
+    '/home',
+    '/donating-food',
+    '/booking-food',
+    '/history',
+    '/about',
+  ];
+
+  // Check if the current path matches a route where Footer should be shown
+  const shouldShowFooter = showFooterRoutes.includes(location.pathname);
+
   return (
-    <AuthProvider> {/* Wrap the whole app with AuthProvider */}
+    <AuthProvider>
       <TransitionGroup>
         <CSSTransition
           key={location.key}
@@ -37,16 +50,14 @@ const App = () => {
               <Route path="/home" element={<PrivateRoute element={<HomePage />} />} />
               <Route path="/donating-food" element={<PrivateRoute element={<DonatingFoodPage />} />} />
               <Route path="/booking-food" element={<PrivateRoute element={<BookingFoodPage />} />} />
-              
-              <Route path="/History" element={<PrivateRoute element={<HistoryPage />} />} />
+              <Route path="/history" element={<PrivateRoute element={<HistoryPage />} />} />
               <Route path="/about" element={<PrivateRoute element={<About />} />} />
-
 
               {/* Fallback for Unknown Routes */}
               <Route
                 path="*"
                 element={
-                  <div className="page-not-found-container">
+                  <div className="page-not-found-container text-center py-40">
                     <h1 className="text-6xl font-bold text-red-600 animate-bounce">
                       404
                     </h1>
@@ -63,7 +74,8 @@ const App = () => {
                 }
               />
             </Routes>
-            <Footer />
+            {/* Conditionally render Footer */}
+            {shouldShowFooter && <Footer />}
           </div>
         </CSSTransition>
       </TransitionGroup>
