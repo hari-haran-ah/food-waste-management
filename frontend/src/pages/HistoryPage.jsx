@@ -78,8 +78,8 @@ const HistoryPage = () => {
       </header>
 
       {/* Content */}
-      <div className="pt-24 px-6 w-full max-w-7xl mb-96">
-        <h2 className="text-3xl text-blue-800 font-semibold mb-6">Donation History</h2>
+      <div className="pt-24  w-full max-w-7xl mb-96">
+        <h2 className="text-3xl text-blue-800 font-semibold mb-6 ">Donation History</h2>
         {history.length === 0 ? (
           <p className="text-center text-lg text-gray-500 mb-6">No History Available.</p>
         ) : (
