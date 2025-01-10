@@ -36,11 +36,6 @@ const HomePage = () => {
 
   return (
     <motion.div
-      initial="initial"
-      animate="in"
-      exit="out"
-      variants={pageVariants}
-      transition={pageTransition}
       className="min-h-screen bg-white text-blue-800 overflow-hidden"
     >
       <header className="bg-blue-800 p-4 w-full z-10 fixed top-0 left-0">

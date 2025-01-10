@@ -35,15 +35,18 @@ const SignInForm = ({ onSignIn, loading, error }) => {
         type="submit"
         className={`w-full py-3 rounded-lg text-white font-semibold transition-all duration-300 ${
           loading
-            ? 'bg-blue-400 cursor-not-allowed'
-            : 'bg-blue-600 hover:bg-blue-700'
+            ? "bg-blue-400 cursor-not-allowed"
+            : "bg-blue-600 hover:bg-blue-700"
         }`}
         disabled={loading}
       >
-        {loading ? 'Signing In...' : 'Sign In'}
+        {loading ? "Signing In..." : "Sign In"}
       </button>
     </form>
   );
 };
+
+
+
 
 export default SignInForm;
