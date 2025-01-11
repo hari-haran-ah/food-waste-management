@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getDonations } from '../api/donationApi';
-import { updateBookingStatus } from '../api/donationApi';
+import { getDonations, updateBookingStatus } from '../api/donationApi';
 import AppIcon from '../components/AppIcon';
 import FoodCard from '../components/FoodCard';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const BookingDonationPage = () => {
   const [donations, setDonations] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState(''); // State for handling error messages
+  const [errorMessage, setErrorMessage] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isBookingSuccess, setIsBookingSuccess] = useState(false); // To track booking success
   const [selectedDonationId, setSelectedDonationId] = useState(null);
   const navigate = useNavigate();
 
@@ -46,24 +46,55 @@ const BookingDonationPage = () => {
 
   const confirmBooking = async () => {
     try {
-      const result = await updateBookingStatus(selectedDonationId, 'User123'); // Replace 'User123' with the logged-in username
+      const result = await updateBookingStatus(selectedDonationId, 'User123'); // Replace 'User123' with actual username
       if (result.success) {
         // Update the donation list after successful booking
         setDonations((prevDonations) =>
-          prevDonations.map((donation) =>
-            donation._id === selectedDonationId ? { ...donation, isBooked: true } : donation
-          )
+          prevDonations
+            .filter((donation) => donation._id !== selectedDonationId) // Remove booked donation from available list
+            .map((donation) =>
+              donation._id === selectedDonationId ? { ...donation, isBooked: true } : donation
+            )
         );
-        setIsBookingSuccess(true);
         setIsModalOpen(false); // Close the modal
+
+        // Show success toast notification
+        toast.success('Booking Successful!', {
+          position: 'top-right',
+          autoClose: 3000,
+          style: {
+            backgroundColor: '#2b6cb0', // Correct bg-blue-800 color
+            color: 'white',
+          },
+        });
       } else {
         setErrorMessage('Failed to book donation. Please try again later.');
         setIsModalOpen(false); // Close the modal on error
+
+        // Show error toast notification
+        toast.error('Failed to book donation. Please try again later.', {
+          position: 'top-right',
+          autoClose: 3000,
+          style: {
+            backgroundColor: '#e53e3e', // Correct bg-red-600 color
+            color: 'white',
+          },
+        });
       }
     } catch (error) {
       console.error('Failed to book donation', error);
       setErrorMessage(error.message); // Display error message from the API
       setIsModalOpen(false); // Close the modal on error
+
+      // Show error toast notification
+      toast.error(`Error: ${error.message}`, {
+        position: 'top-right',
+        autoClose: 3000,
+        style: {
+          backgroundColor: '#e53e3e', // Correct bg-red-600 color
+          color: 'white',
+        },
+      });
     }
   };
 
@@ -78,30 +109,31 @@ const BookingDonationPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
-       <header className="bg-blue-800 p-4 w-full z-10 fixed top-0 left-0">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <h1 className="text-3xl font-bold text-white flex items-center space-x-2">
-          <h1 className="text-3xl font-bold text-white">
-            FOOD DONATE APP
-          </h1>
-            <AppIcon className="inline-block ml-2 animate-pulse-slow" />
-          </h1>
-          <div className="flex space-x-4">
-            <button
-              className="bg-transparent border-2 border-white text-white py-2 px-6 rounded-lg text-sm font-semibold hover:bg-white hover:text-blue-800 transition duration-300"
-              onClick={() => navigate('/home')}
-            >
-              Home
-            </button>
-            <button
-              className="bg-transparent border-2 border-white text-white py-2 px-6 rounded-lg text-sm font-semibold hover:bg-white hover:text-blue-800 transition duration-300"
-              onClick={() => navigate('/history')}
-            >
-              History
-            </button>
-          </div>
-        </div>
-      </header>
+      <ToastContainer />
+      <header className="bg-blue-800 p-4 w-full z-10 fixed top-0 left-0">
+  <div className="max-w-7xl mx-auto flex justify-between items-center">
+    <h1 className="text-3xl font-bold text-white flex items-center space-x-2">
+      FOOD DONATE APP
+      <AppIcon className="inline-block ml-2 animate-pulse-slow" />
+    </h1>
+    <div className="flex space-x-4">
+      <button
+        className="bg-transparent border-2 border-white text-white py-2 px-6 rounded-lg text-sm font-semibold hover:bg-white hover:text-blue-800 transition duration-300"
+        onClick={() => navigate('/home')}
+      >
+        Home
+      </button>
+      <button
+        className="bg-transparent border-2 border-white text-white py-2 px-6 rounded-lg text-sm font-semibold hover:bg-white hover:text-blue-800 transition duration-300"
+        onClick={() => navigate('/history')}
+      >
+        History
+      </button>
+    </div>
+  </div>
+</header>
+
+
       <main className="mt-24 px-4">
         <h2 className="text-3xl text-blue-800 font-semibold mb-6 ml-5">Available Donations</h2>
 
@@ -127,22 +159,6 @@ const BookingDonationPage = () => {
 
         {/* Error Message */}
         {errorMessage && <p className="mt-4 text-red-500">{errorMessage}</p>}
-
-        {/* Success Modal */}
-        {isBookingSuccess && (
-          <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 transition-opacity duration-300 opacity-100">
-            <div className="bg-white p-6 rounded-md shadow-xl transform scale-95 transition-all duration-300 ease-in-out">
-            <p className="text-green-500 text-lg font-semibold">Booking Successful!</p>
-            <button
-              className="mt-4 px-6 py-2 bg-green-500 text-white rounded-full hover:bg-green-600 transition duration-300"
-              onClick={() => navigate('/booking-food')}
-            >
-            OK
-            </button>
-            </div>
-        </div>
-)}
-
 
         {/* Confirmation Modal */}
         {isModalOpen && (

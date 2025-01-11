@@ -1,15 +1,15 @@
-// src/pages/HistoryPage.jsx
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getDonations, deleteDonation } from '../api/donationApi';
 import { motion, AnimatePresence } from 'framer-motion';
 import AppIcon from '../components/AppIcon';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const HistoryPage = () => {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isDeleted, setIsDeleted] = useState(false);
   const [selectedDonation, setSelectedDonation] = useState(null);
   const navigate = useNavigate();
 
@@ -28,7 +28,7 @@ const HistoryPage = () => {
     };
 
     fetchHistory();
-  }, [isDeleted]);
+  }, []);
 
   const handleDeleteClick = (donation) => {
     setSelectedDonation(donation);
@@ -37,20 +37,37 @@ const HistoryPage = () => {
 
   const handleDeleteConfirm = async () => {
     try {
+      // Send the delete request to the backend
       await deleteDonation(selectedDonation._id);
-      setIsDeleted(true);
-      setHistory(history.filter((donation) => donation._id !== selectedDonation._id));
-      setTimeout(() => {
-        setIsModalOpen(false);
-      }, 1000); // Delay closing the modal for 1 second
+
+      // Update state after successful deletion (immutable update)
+      setHistory((prevHistory) => {
+        return prevHistory.filter((donation) => donation._id !== selectedDonation._id);
+      });
+
+      // Close the modal after deletion
+      setIsModalOpen(false);
+
+      // Show success toast with 5-second duration at the top-right corner
+      toast.success('Donation deleted successfully!', {
+        position: 'top-right',
+        autoClose: 5000,
+        style: {
+          background: '#2b6cb0',
+          color: 'white',
+        },
+      });
     } catch (error) {
       console.error('Error deleting donation:', error);
-      alert('Failed to delete donation');
+      toast.error('Failed to delete donation', {
+        position: 'top-right',
+        autoClose: 5000,
+        style: {
+          background: '#e53e3e',
+          color: 'white',
+        },
+      });
     }
-  };
-  
-  const handleDeleteSuccess = () => {
-    setIsDeleted(false); // Reset deleted state after clicking "OK"
   };
 
   if (loading) {
@@ -78,8 +95,8 @@ const HistoryPage = () => {
       </header>
 
       {/* Content */}
-      <div className="pt-24  w-full max-w-7xl mb-96">
-        <h2 className="text-3xl text-blue-800 font-semibold mb-6 ">Donation History</h2>
+      <div className="pt-24 w-full max-w-7xl mb-96">
+        <h2 className="text-3xl text-blue-800 font-semibold mb-6">Donation History</h2>
         {history.length === 0 ? (
           <p className="text-center text-lg text-gray-500 mb-6">No History Available.</p>
         ) : (
@@ -94,7 +111,6 @@ const HistoryPage = () => {
               >
                 <div className="flex items-center justify-between w-full">
                   <h3 className="text-xl font-medium text-blue-800">{donation.foodName}</h3>
-                  {/* SVG Icon */}
                   <svg
                     width="50px"
                     height="50px"
@@ -132,7 +148,7 @@ const HistoryPage = () => {
 
       {/* Delete Confirmation Modal */}
       <AnimatePresence>
-        {isModalOpen && !isDeleted && (
+        {isModalOpen && (
           <motion.div
             className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
             initial={{ opacity: 0 }}
@@ -159,28 +175,10 @@ const HistoryPage = () => {
             </div>
           </motion.div>
         )}
-        {isDeleted && (
-  <motion.div
-    className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
-    initial={{ opacity: 0 }}
-    animate={{ opacity: 1 }}
-    exit={{ opacity: 0 }}
-  >
-    <div className="bg-white p-6 rounded-lg shadow-lg">
-      <h3 className="text-xl font-bold text-green-600 text-center">
-        Donation deleted successfully!
-      </h3>
-      <button
-        className="bg-green-600 text-white px-2 py-1 rounded mt-4"
-        onClick={handleDeleteSuccess}
-      >
-        OK
-      </button>
-    </div>
-  </motion.div>
-)}
-
       </AnimatePresence>
+
+      {/* Toast Container */}
+      <ToastContainer />
     </div>
   );
 };
