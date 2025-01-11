@@ -135,13 +135,13 @@ const BookingDonationPage = () => {
 
 
       <main className="mt-24 px-4">
-        <h2 className="text-3xl text-blue-800 font-semibold mb-6 ml-5">Available Donations</h2>
+        <h2 className="text-3xl text-blue-800 font-semibold mb-6 ml-1">Available Donations</h2>
 
         {/* If there are no donations available, show the 'Food not available' message */}
         {donations.length === 0 ? (
           <p className="text-center text-lg text-gray-500">Food not available at the moment.</p>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 ml-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {donations.map((donation) => (
               <FoodCard
                 key={donation._id}

@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import HomePage from "./pages/HomePage";
@@ -11,10 +11,12 @@ import PrivateRoute from "./components/PrivateRoute";
 import HistoryPage from "./pages/HistoryPage";
 import About from "./pages/About";
 import { AuthProvider } from "./context/AuthContext";
+import PageLoader from "./components/PageLoader";
 
 const App = () => {
   const location = useLocation();
   const nodeRef = useRef(null);
+  const [loading, setLoading] = useState(false); // Loading state
 
   // Define the paths where Footer should be displayed
   const showFooterRoutes = [
@@ -30,8 +32,15 @@ const App = () => {
   // Check if the current path matches a route where Footer should be shown
   const shouldShowFooter = showFooterRoutes.includes(location.pathname);
 
+  // Trigger loading state during route changes
+  const handleStartLoading = () => setLoading(true);
+  const handleStopLoading = () => setLoading(false);
+
   return (
     <AuthProvider>
+      {/* Display the PageLoader when loading is true */}
+      {loading && <PageLoader />}
+
       <div className="p-4">
         <TransitionGroup>
           <CSSTransition
@@ -39,6 +48,8 @@ const App = () => {
             timeout={300}
             classNames="fade"
             nodeRef={nodeRef}
+            onEnter={handleStartLoading} // Start loading when route transition begins
+            onEntered={handleStopLoading} // Stop loading when route transition ends
           >
             <div ref={nodeRef}>
               <Routes location={location}>
