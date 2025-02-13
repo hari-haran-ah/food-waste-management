@@ -13,3 +13,4 @@ const donationSchema = new mongoose.Schema({
 
 // Create and export the Donation model
 module.exports = mongoose.model('Donation', donationSchema);
+
