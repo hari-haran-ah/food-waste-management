@@ -3,7 +3,7 @@ import apiClient from './apiClient';
 // SignIn function
 export const signIn = async (data) => {
   try {
-    const response = await apiClient.post('/api/auth/signin', data);
+    const response = await apiClient.post('/api/auth/signin', data,{ withCredentials: true });
     return response.data;
   } catch (error) {
     const errorMessage = error.response?.data?.message || error.message || 'An unexpected error occurred';
