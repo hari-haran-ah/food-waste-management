@@ -5,11 +5,25 @@ const User = require('../models/User');
 // Sign-up controller
 exports.signUp = async (req, res) => {
   try {
-    const { name, email, password, confirmPassword } = req.body;
+    let { name, email, password, confirmPassword } = req.body;
+
+    // Trim inputs to remove accidental spaces
+    name = name.trim();
+    email = email.trim().toLowerCase();
+    password = password.trim();
+    confirmPassword = confirmPassword.trim();
 
     // Validate input
+    if (!name || !email || !password || !confirmPassword) {
+      return res.status(400).json({ message: 'All fields are required' });
+    }
+
     if (password !== confirmPassword) {
       return res.status(400).json({ message: 'Passwords do not match' });
+    }
+
+    if (password.length < 6) {
+      return res.status(400).json({ message: 'Password must be at least 6 characters' });
     }
 
     const existingUser = await User.findOne({ email });
@@ -17,7 +31,9 @@ exports.signUp = async (req, res) => {
       return res.status(400).json({ message: 'User already exists' });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
     const newUser = new User({ name, email, password: hashedPassword });
 
     await newUser.save();
@@ -26,21 +42,32 @@ exports.signUp = async (req, res) => {
 
     res.cookie('token', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // Set to true in production
+      secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
     });
-    
 
-    res.status(201).json({ message: 'User created', token });
+    res.status(201).json({
+      message: 'User created successfully',
+      token,
+      user: { id: newUser._id, name: newUser.name, email: newUser.email },
+    });
   } catch (error) {
-    res.status(500).json({ message: 'Error creating user', error });
+    console.error('Signup Error:', error);
+    res.status(500).json({ message: 'Error creating user' });
   }
 };
 
 // Sign-in controller
 exports.signIn = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    let { email, password } = req.body;
+
+    email = email.trim().toLowerCase();
+    password = password.trim();
+
+    if (!email || !password) {
+      return res.status(400).json({ message: 'All fields are required' });
+    }
 
     const user = await User.findOne({ email });
     if (!user) {
@@ -56,13 +83,17 @@ exports.signIn = async (req, res) => {
 
     res.cookie('token', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // Set to true in production
+      secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
     });
-    
 
-    res.status(200).json({ message: 'Logged in successfully', token });
+    res.status(200).json({
+      message: 'Logged in successfully',
+      token,
+      user: { id: user._id, name: user.name, email: user.email },
+    });
   } catch (error) {
-    res.status(500).json({ message: 'Error logging in', error });
+    console.error('Login Error:', error);
+    res.status(500).json({ message: 'Error logging in' });
   }
 };
