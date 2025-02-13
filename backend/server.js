@@ -14,7 +14,7 @@ connectDB();
 
 // Middlewares
 app.use(cors({
-  origin: 'http://localhost:5173',  // Update this if your frontend URL changes
+  origin: process.env.FRONTEND_URL || 'http://localhost:5173',  // Update this if your frontend URL changes
   methods: ['GET', 'POST', 'PATCH', 'DELETE'],
   credentials: true,
 }));
