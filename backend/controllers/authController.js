@@ -59,7 +59,6 @@ exports.signUp = async (req, res) => {
 exports.signIn = async (req, res) => {
   try {
     let { email, password } = req.body;
-
     email = email.trim().toLowerCase();
     password = password.trim();
 
@@ -67,31 +66,35 @@ exports.signIn = async (req, res) => {
       return res.status(400).json({ message: 'All fields are required' });
     }
 
-    // Find user
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
-    // Check password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
-    // Generate token
-    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-    // Set cookie
+    // ✅ Fix cookie settings
     res.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      httpOnly: true, // Secure against XSS
+      secure: process.env.NODE_ENV === 'production', // Only use HTTPS in production
+      sameSite: 'None', // Allows cross-site requests
+      path: '/', // Ensure it applies to all routes
+      maxAge: 60 * 60 * 1000, // Expire in 1 hour
     });
 
-    res.status(200).json({ message: 'Logged in successfully', token, user: { id: user._id, name, email } });
+    res.status(200).json({
+      message: 'Login successful',
+      token,
+      user: { id: user._id, name: user.name, email: user.email },
+    });
   } catch (error) {
     console.error('Login Error:', error);
     res.status(500).json({ message: 'Error logging in' });
   }
 };
+
