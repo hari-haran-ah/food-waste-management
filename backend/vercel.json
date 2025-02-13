@@ -1,17 +1,10 @@
 {
-    "name": "food waste ",
-    "builds ": [    
-            {
-                "src": "server.js",
-                "use": "@vercel/node"
-
-            }
-    ],
+    "name": "food waste",
     "routes": [
-        {
-            "src": "/(.*)",
-            "dest": "/"
-        }
+      {
+        "src": "/(.*)",
+        "dest": "/"
+      }
     ]
-
-}
+  }
+  
