@@ -2,56 +2,53 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
+// Ensure JWT_SECRET is defined
+const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
 // Sign-up controller
 exports.signUp = async (req, res) => {
   try {
     let { name, email, password, confirmPassword } = req.body;
 
-    // Trim inputs to remove accidental spaces
+    // Trim inputs
     name = name.trim();
     email = email.trim().toLowerCase();
     password = password.trim();
     confirmPassword = confirmPassword.trim();
 
-    // Validate input
+    // Validation
     if (!name || !email || !password || !confirmPassword) {
       return res.status(400).json({ message: 'All fields are required' });
     }
-
     if (password !== confirmPassword) {
       return res.status(400).json({ message: 'Passwords do not match' });
     }
-
     if (password.length < 6) {
       return res.status(400).json({ message: 'Password must be at least 6 characters' });
     }
 
+    // Check if user exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: 'User already exists' });
     }
 
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({ name, email, password: hashedPassword });
-
     await newUser.save();
 
-    const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    // Generate token
+    const token = jwt.sign({ id: newUser._id }, JWT_SECRET, { expiresIn: '1h' });
 
+    // Set cookie
     res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
     });
 
-    res.status(201).json({
-      message: 'User created successfully',
-      token,
-      user: { id: newUser._id, name: newUser.name, email: newUser.email },
-    });
+    res.status(201).json({ message: 'User created successfully', token, user: { id: newUser._id, name, email } });
   } catch (error) {
     console.error('Signup Error:', error);
     res.status(500).json({ message: 'Error creating user' });
@@ -70,30 +67,29 @@ exports.signIn = async (req, res) => {
       return res.status(400).json({ message: 'All fields are required' });
     }
 
+    // Find user
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
+    // Check password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    // Generate token
+    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: '1h' });
 
+    // Set cookie
     res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
     });
-    Cookie.set('token', token);
 
-    res.status(200).json({
-      message: 'Logged in successfully',
-      token,
-      user: { id: user._id, name: user.name, email: user.email },
-    });
+    res.status(200).json({ message: 'Logged in successfully', token, user: { id: user._id, name, email } });
   } catch (error) {
     console.error('Login Error:', error);
     res.status(500).json({ message: 'Error logging in' });
