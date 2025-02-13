@@ -42,9 +42,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Root route
-app.get('/', (req, res) => {
-  res.send('Welcome to the Food Waste Management API!');
-});
+
 
 // Routes
 app.use('/api/auth', authRoutes);
