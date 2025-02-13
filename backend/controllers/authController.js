@@ -59,6 +59,7 @@ exports.signUp = async (req, res) => {
 exports.signIn = async (req, res) => {
   try {
     let { email, password } = req.body;
+
     email = email.trim().toLowerCase();
     password = password.trim();
 
@@ -80,10 +81,10 @@ exports.signIn = async (req, res) => {
 
     // ✅ Fix cookie settings
     res.cookie('token', token, {
-      httpOnly: true, // Secure against XSS
-      secure: process.env.NODE_ENV === 'production', // Only use HTTPS in production
-      sameSite: 'None', // Allows cross-site requests
-      path: '/', // Ensure it applies to all routes
+      httpOnly: true,  // Prevent JavaScript access
+      secure: true,  // Required for HTTPS (true for production)
+      sameSite: 'None', // Allow cross-origin requests (important for Vercel)
+      path: '/', // Ensure cookie is accessible across the site
       maxAge: 60 * 60 * 1000, // Expire in 1 hour
     });
 
@@ -97,4 +98,5 @@ exports.signIn = async (req, res) => {
     res.status(500).json({ message: 'Error logging in' });
   }
 };
+
 
