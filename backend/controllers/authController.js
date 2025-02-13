@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
+
 // Sign-up controller
 exports.signUp = async (req, res) => {
   try {
@@ -86,6 +87,7 @@ exports.signIn = async (req, res) => {
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
     });
+    Cookie.set('token', token);
 
     res.status(200).json({
       message: 'Logged in successfully',
