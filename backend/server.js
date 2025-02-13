@@ -14,7 +14,7 @@ connectDB();
 
 // Middlewares
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: process.env.FRONTEND_URL || ' https://food-waste-management-20.vercel.app ',
   methods: ['GET', 'POST', 'PATCH', 'DELETE'],
   credentials: true,
 }));
