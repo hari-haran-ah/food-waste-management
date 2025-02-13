@@ -12,8 +12,6 @@ const app = express();
 // Connect to database
 connectDB();
 
-// Middlewares
-const cors = require('cors');
 
 // Allow requests from your frontend domain
 const allowedOrigins = [
