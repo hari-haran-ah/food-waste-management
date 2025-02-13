@@ -12,9 +12,11 @@ const authMiddleware = (req, res, next) => {
     req.user = decoded;
     next();
   } catch (error) {
-    res.status(403).json({ message: 'Unauthorized' });
+    if (error.name === 'TokenExpiredError') {
+      return res.status(401).json({ message: 'Session expired, please log in again' });
+    }
+    res.status(403).json({ message: 'Invalid token' });
   }
 };
 
 module.exports = authMiddleware;
-
