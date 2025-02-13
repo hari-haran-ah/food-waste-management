@@ -14,18 +14,41 @@ const DonationFoodPage = () => {
     quantity: '',
     phoneNumber: '',
     username: '',
+    location: '', // Added location field
   });
   const [error, setError] = useState('');
-  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false); // State for the confirmation modal
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
+
+    // Validate all fields
+    if (
+      !donationDetails.foodName ||
+      !donationDetails.quantity ||
+      !donationDetails.phoneNumber ||
+      !donationDetails.username ||
+      !donationDetails.location
+    ) {
+      setError('All fields are required.');
+      toast.error('All fields are required.', {
+        position: 'top-right',
+        autoClose: 3000,
+        style: {
+          backgroundColor: '#2b6cb0',
+          color: 'white',
+        },
+      });
+      return;
+    }
+
     setIsConfirmModalOpen(true); // Open the confirmation modal
   };
 
   const handleConfirmDonation = async () => {
+    console.log('Donation Details:', donationDetails); // Debugging
     try {
-      await postDonation(donationDetails); // Post the donation
+      await postDonation(donationDetails);
       setDonationDetails({
         foodName: '',
         quantity: '',
@@ -33,23 +56,24 @@ const DonationFoodPage = () => {
         location: '',
         username: '',
       });
-      setIsConfirmModalOpen(false); // Close the confirmation modal
+      setIsConfirmModalOpen(false);
       toast.success('Donation posted successfully!', {
         position: 'top-right',
         autoClose: 3000,
         style: {
-          backgroundColor: '#2b6cb0', // Correct bg-blue-800 color
-          color: 'white', // White text for contrast
+          backgroundColor: '#2b6cb0',
+          color: 'white',
         },
       });
     } catch (error) {
+      console.error('Error posting donation:', error); // Debugging
       setError('Failed to post donation. Please try again.');
       toast.error('Failed to post donation. Please try again.', {
         position: 'top-right',
         autoClose: 3000,
         style: {
-          backgroundColor: '#2b6cb0', // Correct bg-blue-800 color
-          color: 'white', // White text for contrast
+          backgroundColor: '#2b6cb0',
+          color: 'white',
         },
       });
     }
@@ -108,7 +132,7 @@ const DonationFoodPage = () => {
                   className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  onClick={() => setIsConfirmModalOpen(false)} // Close the confirmation modal without posting
+                  onClick={() => setIsConfirmModalOpen(false)}
                 >
                   Cancel
                 </motion.button>
@@ -116,7 +140,7 @@ const DonationFoodPage = () => {
                   className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  onClick={handleConfirmDonation} // Confirm and post the donation
+                  onClick={handleConfirmDonation}
                 >
                   Confirm
                 </motion.button>
