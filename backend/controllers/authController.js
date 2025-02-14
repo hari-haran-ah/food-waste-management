@@ -9,7 +9,6 @@ exports.signUp = async (req, res) => {
   try {
     const { name, email, password, confirmPassword } = req.body;
 
-    // Validate input
     if (password !== confirmPassword) {
       return res.status(400).json({ message: 'Passwords do not match' });
     }
@@ -25,8 +24,6 @@ exports.signUp = async (req, res) => {
     await newUser.save();
 
     const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-
-    res.cookie('token', token, { httpOnly: true, secure: false, sameSite: 'strict' });
 
     res.status(201).json({ message: 'User created', token });
   } catch (error) {
@@ -50,8 +47,6 @@ exports.signIn = async (req, res) => {
     }
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-
-    res.cookie('token', token, { httpOnly: true, secure: true, sameSite: 'strict' });
 
     res.status(200).json({ message: 'Logged in successfully', token });
   } catch (error) {

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signIn } from "../api/auth";
 import SignInForm from "../components/SignInForm";
-import Cookies from "js-cookie";
 import AppIcon from "../components/AppIcon";
 
 const SignInPage = () => {
@@ -15,7 +14,10 @@ const SignInPage = () => {
     setError("");
     try {
       const response = await signIn({ email, password });
-      console.log(response);
+
+      // Store token in localStorage instead of cookies
+      localStorage.setItem("user", JSON.stringify(response.token));
+
       navigate("/home");
     } catch (err) {
       setError("Invalid email or password");
