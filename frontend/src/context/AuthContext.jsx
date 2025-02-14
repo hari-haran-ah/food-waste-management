@@ -1,4 +1,3 @@
-// context/AuthContext.jsx
 import React, { createContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie'; // Import js-cookie
@@ -25,8 +24,9 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     Cookies.remove('user');
+    localStorage.clear();
     setUser(null);
-    navigate('/'); // Redirect to sign-in page after logout
+    navigate('/signin'); // Redirect to sign-in page after logout
   };
 
   return (

@@ -18,6 +18,7 @@ const DonationFoodPage = () => {
   });
   const [error, setError] = useState('');
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);  // Loading state
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -48,6 +49,7 @@ const DonationFoodPage = () => {
   const handleConfirmDonation = async () => {
     console.log('Donation Details:', donationDetails); // Debugging
     try {
+      setIsSubmitting(true); // Set submitting state to true
       await postDonation(donationDetails);
       setDonationDetails({
         foodName: '',
@@ -76,6 +78,8 @@ const DonationFoodPage = () => {
           color: 'white',
         },
       });
+    } finally {
+      setIsSubmitting(false); // Reset submitting state after request
     }
   };
 
@@ -141,8 +145,9 @@ const DonationFoodPage = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={handleConfirmDonation}
+                  disabled={isSubmitting}  // Disable the button while submitting
                 >
-                  Confirm
+                  {isSubmitting ? 'Posting...' : 'Confirm'}  {/* Show loading text */}
                 </motion.button>
               </div>
             </motion.div>

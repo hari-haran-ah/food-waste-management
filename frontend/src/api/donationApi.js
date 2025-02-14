@@ -25,26 +25,53 @@ export const getDonations = async () => {
 };
 
 // Function to update booking status
+// Assuming you have an apiClient for handling axios requests
+
 export const updateBookingStatus = async (donationId, username) => {
   try {
-    const response = await apiClient.patch(`/api/donations/book/${donationId}`, { username });
+    // Get the token from localStorage
+    const token = localStorage.getItem('user');  // Ensure 'user' is actually storing the JWT token
+    if (!token) {
+      throw new Error('You need to be logged in to book a donation.');
+    }
 
+    // Make the API request to book the donation
+    const response = await apiClient.patch(
+      `/api/donations/book/${donationId}`,
+      { username },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
+        },
+      }
+    );
+
+    // Check the response for success
     if (response.data.message === "Donation booked successfully") {
       return { success: true, donation: response.data.donation };
     }
 
+    // If no success message, throw an error
     throw new Error('Failed to book donation');
   } catch (error) {
-    if (error.response && error.response.data && error.response.data.message === 'This donation is already booked') {
-      console.error('This donation is already booked');
-      throw new Error('This donation is already booked');
+    // Handle different types of errors more gracefully
+    if (error.response && error.response.data) {
+      const errorMessage = error.response.data.message || 'An unexpected error occurred';
+      if (errorMessage === 'This donation is already booked') {
+        console.error('This donation is already booked');
+        throw new Error('This donation is already booked');
+      } else {
+        console.error('Error booking donation:', errorMessage);
+        throw new Error(errorMessage);
+      }
     } else {
-      const errorMessage = error.response?.data?.message || error.message || 'An unexpected error occurred';
-      console.error('Error booking donation:', errorMessage);
-      throw new Error(errorMessage);
+      const generalErrorMessage = error.message || 'An error occurred while booking donation';
+      console.error('Error booking donation:', generalErrorMessage);
+      throw new Error(generalErrorMessage);
     }
   }
 };
+
 
 // Function to delete a donation
 export const deleteDonation = async (donationId) => {

@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext"; // Import AuthContext
 import { signIn } from "../api/auth";
 import SignInForm from "../components/SignInForm";
 import AppIcon from "../components/AppIcon";
@@ -8,41 +10,38 @@ const SignInPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext); // Use login from context
 
   const handleSignIn = async (email, password) => {
-    if (error) setError(''); // Clear previous error
+    if (error) setError(""); // Clear previous error
     setLoading(true);
-  
+
     try {
       const response = await signIn({ email, password });
-  
+
       if (response && response.token) {
-        console.log("Sign In successful:", response);
-        localStorage.setItem("user", response.token); // Storing the token in localStorage
-        navigate('/home'); // Redirect to the home page after successful login
+        login({ token: response.token, email }); // Save user data in context
+        navigate("/home"); // Redirect to home after successful login
       } else {
-        throw new Error('Invalid response structure: No token found');
+        throw new Error("Invalid response structure: No token found");
       }
     } catch (err) {
       console.error("Sign In Error:", err);
-      setError(err.message || 'An error occurred during sign in');
+      setError(err.message || "An error occurred during sign in");
     } finally {
       setLoading(false);
     }
   };
-  
-  
 
   return (
     <div className="flex flex-col h-screen">
       {/* Fixed Header */}
       <header className="fixed top-0 left-0 w-full z-10 bg-blue-800 p-4 shadow-lg">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-white flex items-center space-x-2">
-          FOOD DONATE APP
-          <AppIcon className="inline-block ml-2 animate-pulse-slow" />
-        </h1>
-
+          <h1 className="text-3xl font-bold text-white flex items-center space-x-2">
+            FOOD DONATE APP
+            <AppIcon className="inline-block ml-2 animate-pulse-slow" />
+          </h1>
           <button
             onClick={() => navigate("/signup")}
             className="bg-transparent border-2 border-white text-white py-2 px-6 rounded-lg text-sm font-semibold hover:bg-white hover:text-blue-800 transition duration-300"
