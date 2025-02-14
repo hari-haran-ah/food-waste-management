@@ -1,86 +1,75 @@
-const express = require('express');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+authroutes
 
+const express = require('express');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const User = require('../models/User'); // Ensure this points to your correct User model
 const router = express.Router();
+
+// Secret key for JWT signing
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
-// Sign-up Route
+// Sign-up route (POST /auth/signup)
 router.post('/signup', async (req, res) => {
+  const { name, email, password, confirmPassword } = req.body;
+
+  // Check if the email already exists
+  const existingUser = await User.findOne({ email });
+  if (existingUser) {
+    return res.status(400).json({ message: 'User already exists' });
+  }
+
+  // Check if passwords match
+  if (password !== confirmPassword) {
+    return res.status(400).json({ message: 'Passwords do not match' });
+  }
+
   try {
-    let { name, email, password, confirmPassword } = req.body;
-    
-    // Trim input
-    name = name.trim();
-    email = email.trim().toLowerCase();
-    password = password.trim();
-    confirmPassword = confirmPassword.trim();
-
-    // Validate input
-    if (!name || !email || !password || !confirmPassword) {
-      return res.status(400).json({ message: 'All fields are required' });
-    }
-
-    if (password !== confirmPassword) {
-      return res.status(400).json({ message: 'Passwords do not match' });
-    }
-
-    if (password.length < 6) {
-      return res.status(400).json({ message: 'Password must be at least 6 characters' });
-    }
-
-    // Check if user exists
-    const existingUser = await User.findOne({ email });
-    if (existingUser) return res.status(400).json({ message: 'User already exists' });
-
-    // Hash password
+    // Hash the password before saving
     const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Save user
+    
+    // Create new user
     const newUser = new User({ name, email, password: hashedPassword });
     await newUser.save();
 
-    // Create token
-    const token = jwt.sign({ id: newUser._id, name: newUser.name, email: newUser.email }, JWT_SECRET, { expiresIn: '1h' });
+    // Create JWT token
+    const token = jwt.sign({ userId: newUser._id }, JWT_SECRET, { expiresIn: '1h' });
 
-    // Send response
+    // Send response with the token
     res.status(201).json({ message: 'User created successfully', token });
   } catch (error) {
-    console.error('Signup Error:', error);
+    console.error(error);
     res.status(500).json({ message: 'Server error' });
   }
 });
 
-// Sign-in Route
+// Sign-in route (POST /auth/signin)
 router.post('/signin', async (req, res) => {
+  const { email, password } = req.body;
+
   try {
-    let { email, password } = req.body;
-
-    // Normalize input
-    email = email.trim().toLowerCase();
-    password = password.trim();
-
-    if (!email || !password) return res.status(400).json({ message: 'All fields are required' });
-
-    // Find user
+    // Find user by email
     const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ message: 'Invalid credentials' });
+    if (!user) {
+      return res.status(400).json({ message: 'Invalid credentials' });
+    }
 
-    // Check password
+    // Compare password
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
+    if (!isMatch) {
+      return res.status(400).json({ message: 'Invalid credentials' });
+    }
 
-    // Exclude password from token payload
-    const { password: _, ...userData } = user.toObject();
+    // Exclude password from the token payload
+    const { password: _, ...userData } = user.toObject(); // Remove password field
 
-    // Create token
+    // Create JWT token with user details excluding password
     const token = jwt.sign(userData, JWT_SECRET, { expiresIn: '1h' });
 
-    // Send token
+    // Send JWT token to frontend
     res.status(200).json({ message: 'Login successful', token });
   } catch (error) {
-    console.error('Login Error:', error);
+    console.error(error);
     res.status(500).json({ message: 'Internal server error' });
   }
 });

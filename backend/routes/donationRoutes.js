@@ -1,3 +1,5 @@
+donationroutes
+
 const express = require('express');
 const Donation = require('../models/Donation'); // Assuming Donation model exists
 const router = express.Router();
@@ -17,7 +19,7 @@ router.post('/create', async (req, res) => {
       phoneNumber,
       username,
       location,
-      isBooked: false,
+      isBooked: false, // Default status is false (available)
     });
 
     await newDonation.save();
@@ -43,6 +45,10 @@ router.patch('/book/:donationId', async (req, res) => {
   const { donationId } = req.params;
   const { username } = req.body;
 
+  if (!username) {
+    return res.status(400).json({ message: 'Username is required' });
+  }
+
   try {
     const donation = await Donation.findById(donationId);
 
@@ -58,10 +64,14 @@ router.patch('/book/:donationId', async (req, res) => {
     donation.bookedBy = username;
 
     await donation.save();
-    res.status(200).json({ message: 'Donation booked successfully', donation });
+
+    res.status(200).json({
+      message: 'Donation booked successfully',
+      donation,
+    });
   } catch (error) {
     console.error('Error booking donation:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ message: 'Error booking donation' });
   }
 });
 
