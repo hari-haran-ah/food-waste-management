@@ -13,7 +13,7 @@ const HomePage = () => {
   };
 
   const handleSignOut = () => {
-    Cookies.remove('user');
+    localStorage.clear('user');
     navigate('/');
   };
 
@@ -40,10 +40,8 @@ const HomePage = () => {
     >
       <header className="bg-blue-800 p-4 w-full z-10 fixed top-0 left-0">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-white flex items-center space-x-2">
-          <h1 className="text-3xl font-bold text-white">
+          <h1 className="text-3xl font-bold text-white flex items-center space-x-2">
             FOOD DONATE APP
-          </h1>
             <AppIcon className="inline-block ml-2 animate-pulse-slow" />
           </h1>
           <div className="flex space-x-4">
@@ -68,7 +66,7 @@ const HomePage = () => {
           </div>
         </div>
       </header>
-<br /><br /><br /><br />
+      <br /><br /><br /><br />
       <main className="pt-24 px-4 max-w-7xl mx-auto ">
         <motion.h2
           className="text-5xl font-bold mb-6 text-center text-blue-800"

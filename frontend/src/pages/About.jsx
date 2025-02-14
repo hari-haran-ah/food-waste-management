@@ -11,9 +11,7 @@ const About = () => {
       <header className="bg-blue-800 p-4 w-full z-10 fixed top-0 left-0">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <h1 className="text-3xl font-bold text-white flex items-center space-x-2">
-          <h1 className="text-3xl font-bold text-white">
             FOOD DONATE APP
-          </h1>
             <AppIcon className="inline-block ml-2 animate-pulse-slow" />
           </h1>
           <div className="flex space-x-4">
@@ -26,7 +24,7 @@ const About = () => {
           </div>
         </div>
       </header>
-<br /><br /><br />
+      <br /><br /><br />
       {/* About Content Section */}
       <main className="pt-24 px-4 max-w-7xl mx-auto flex flex-col items-center justify-center text-center text-blue-800">
         <h2 className="text-4xl font-semibold mb-6">About the Food Donate App</h2>
