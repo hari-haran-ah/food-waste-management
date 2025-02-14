@@ -15,11 +15,7 @@ const SignInPage = () => {
     setError("");
     try {
       const response = await signIn({ email, password });
-      Cookies.set("user", JSON.stringify(response.data), {
-        expires: 7,
-        secure: true,
-        sameSite: "Strict",
-      });
+      console.log(response);
       navigate("/home");
     } catch (err) {
       setError("Invalid email or password");
