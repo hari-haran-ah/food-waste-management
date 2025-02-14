@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signIn } from "../api/auth";
 import SignInForm from "../components/SignInForm";
@@ -9,31 +9,23 @@ const SignInPage = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  // Redirect if already logged in
-  useEffect(() => {
-    const token = localStorage.getItem("user");
-    if (token) navigate("/home");
-  }, [navigate]);
-
+  // Handle Sign In Logic
   const handleSignIn = async (email, password) => {
+    if (error) setError(''); // Clear previous error
     setLoading(true);
-    setError("");
 
     try {
       const response = await signIn({ email, password });
+      console.log("Sign in successful:", response);
 
-      if (response?.data?.token) {
-        // Store token securely (Consider using HTTP-only cookies instead)
-        localStorage.setItem("user", response.data.token);
+      // Adding a timeout to avoid rapid navigation
+      setTimeout(() => {
+        navigate("/home"); // Navigate to home page after successful sign-in
+      }, 500); // Delay the navigation by 500ms to avoid flooding
 
-        console.log("User authenticated successfully!");
-        navigate("/home");
-      } else {
-        throw new Error("Invalid server response");
-      }
     } catch (err) {
-      console.error("Sign-In Error:", err);
-      setError(err.response?.data?.message || "Invalid email or password");
+      console.error("Sign In Error:", err);
+      setError(err.response ? err.response.data.message : err.message);
     } finally {
       setLoading(false);
     }
