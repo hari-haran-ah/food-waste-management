@@ -16,26 +16,24 @@ connectDB();
 // Allow requests from your frontend domain
 const allowedOrigins = [
   'https://food-waste-management-20.vercel.app',
-  'http://localhost:5173', // For local development
+  'http://localhost:5173',
 ];
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Allow requests with no origin (e.g., mobile apps, curl requests)
-      if (!origin) return callback(null, true);
-
-      // Check if the origin is allowed
-      if (allowedOrigins.includes(origin)) {
+      if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
         callback(new Error('Not allowed by CORS'));
       }
     },
-    methods: ['GET', 'POST', 'PATCH', 'DELETE'], // Allow these HTTP methods
-    credentials: true, // Allow cookies (JWT)
+    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true, 
   })
 );
+
 app.use(express.json());
 app.use(cookieParser());
 
