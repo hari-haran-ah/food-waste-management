@@ -15,19 +15,23 @@ const SignInPage = () => {
     setError("");
     try {
       const response = await signIn({ email, password });
-      Cookies.set("user", JSON.stringify(response.data), {
-        expires: 7,
-        secure: true,
-        sameSite: "Strict",
-      });
-      navigate("/home");
+      if (response && response.data) {
+        Cookies.set("user", JSON.stringify(response.data), {
+          expires: 7,
+          secure: true,
+          sameSite: "Strict",
+        });
+        navigate("/home");
+      } else {
+        setError("Invalid response from server");
+      }
     } catch (err) {
-      setError("Invalid email or password");
+      console.error('SignIn Error:', err);
+      setError(err.response?.data?.message || "Invalid email or password");
     } finally {
       setLoading(false);
     }
   };
-
   return (
     <div className="flex flex-col h-screen">
       {/* Fixed Header */}
