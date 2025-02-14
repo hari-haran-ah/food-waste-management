@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { signIn } from "../api/auth";
 import SignInForm from "../components/SignInForm";
@@ -9,18 +9,31 @@ const SignInPage = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  // Redirect if already logged in
+  useEffect(() => {
+    const token = localStorage.getItem("user");
+    if (token) navigate("/home");
+  }, [navigate]);
+
   const handleSignIn = async (email, password) => {
     setLoading(true);
     setError("");
+
     try {
       const response = await signIn({ email, password });
 
-      // Store token in localStorage instead of cookies
-      localStorage.setItem("user", JSON.stringify(response.token));
+      if (response?.data?.token) {
+        // Store token securely (Consider using HTTP-only cookies instead)
+        localStorage.setItem("user", response.data.token);
 
-      navigate("/home");
+        console.log("User authenticated successfully!");
+        navigate("/home");
+      } else {
+        throw new Error("Invalid server response");
+      }
     } catch (err) {
-      setError("Invalid email or password");
+      console.error("Sign-In Error:", err);
+      setError(err.response?.data?.message || "Invalid email or password");
     } finally {
       setLoading(false);
     }
@@ -51,14 +64,17 @@ const SignInPage = () => {
             Sign In
           </h2>
 
-          <SignInForm onSignIn={handleSignIn} loading={loading} error={error} />
+          {/* Sign In Form */}
+          <SignInForm onSignIn={handleSignIn} loading={loading} />
 
+          {/* Error Message */}
           {error && (
-            <p className="text-red-600 text-center mt-4 bg-red-100 p-2 rounded">
+            <p className="text-red-600 text-center mt-4 bg-red-100 p-2 rounded" aria-live="polite">
               {error}
             </p>
           )}
 
+          {/* Sign Up Redirect */}
           <div className="mt-6 text-center">
             <p className="text-sm mb-2 text-blue-700">Don't have an account?</p>
             <button

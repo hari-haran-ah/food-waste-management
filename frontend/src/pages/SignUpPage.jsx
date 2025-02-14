@@ -1,5 +1,4 @@
-//SignUpPage.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signUp } from '../api/auth';
 import SignUpForm from '../components/SignUpForm';
@@ -17,6 +16,8 @@ const SignUpPage = () => {
     try {
       const response = await signUp({ name, email, password, confirmPassword });
       console.log("Sign up successful:", response);
+
+      // Redirect to login page after successful signup
       navigate('/');
     } catch (err) {
       console.error("Sign Up Error:", err);
@@ -30,10 +31,8 @@ const SignUpPage = () => {
     <div className="min-h-screen flex flex-col items-center justify-center bg-white">
       <header className="fixed top-0 left-0 w-full z-10 p-4 bg-blue-800">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-white flex items-center space-x-2">
-          <h1 className="text-3xl font-bold text-white">
-            FOOD DONATE APP
-          </h1>
+          <h1 className="text-3xl font-bold text-white flex items-center space-x-2">
+            <span>FOOD DONATE APP</span>
             <AppIcon className="inline-block ml-2 animate-pulse-slow" />
           </h1>
           <button
@@ -43,18 +42,19 @@ const SignUpPage = () => {
             Sign In
           </button>
         </div>
-      </header> 
-      <br />
-      <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-lg">
-        <h2 className="text-2xl font-bold text-center mb-6 text-blue-800">
-          Sign Up
-        </h2>
+      </header>
+
+      <main className="w-full max-w-md p-8 bg-white rounded-lg shadow-lg mt-16">
+        <h2 className="text-2xl font-bold text-center mb-6 text-blue-800">Sign Up</h2>
+        
         <SignUpForm onSignUp={handleSignUp} loading={loading} error={error} />
+        
         {error && (
-          <p className="text-red-600 text-center mt-4 bg-red-100 p-2 rounded">
+          <p className="text-red-600 text-center mt-4 bg-red-100 p-2 rounded" aria-live="polite">
             {error}
           </p>
         )}
+
         <div className="mt-6 text-center">
           <p className="text-sm mb-2 text-blue-700">Already have an account?</p>
           <button
@@ -64,7 +64,7 @@ const SignUpPage = () => {
             Sign In Now
           </button>
         </div>
-      </div>
+      </main>
     </div>
   );
 };
