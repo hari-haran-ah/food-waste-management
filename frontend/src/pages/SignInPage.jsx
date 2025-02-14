@@ -13,16 +13,17 @@ const SignInPage = () => {
   const handleSignIn = async (email, password) => {
     if (error) setError(''); // Clear previous error
     setLoading(true);
-
+  
     try {
       const response = await signIn({ email, password });
       console.log("Sign in successful:", response);
-
-      // Adding a timeout to avoid rapid navigation
-      setTimeout(() => {
-        navigate("/home"); // Navigate to home page after successful sign-in
-      }, 500); // Delay the navigation by 500ms to avoid flooding
-
+  
+      // Store token properly (check for token validity)
+      localStorage.setItem("user", JSON.stringify(response.data.token));
+  
+      // Directly navigate to home page after successful sign-in
+      navigate("/home");
+  
     } catch (err) {
       console.error("Sign In Error:", err);
       setError(err.response ? err.response.data.message : err.message);
@@ -30,6 +31,7 @@ const SignInPage = () => {
       setLoading(false);
     }
   };
+  
 
   return (
     <div className="flex flex-col h-screen">

@@ -1,10 +1,12 @@
 import apiClient from './apiClient';
 
+
+
 // SignIn function
 export const signIn = async (data) => {
   try {
     const response = await apiClient.post('/api/auth/signin', data);
-    
+
     const token = response.data.token;
 
     // Store token in localStorage instead of cookies
@@ -17,6 +19,7 @@ export const signIn = async (data) => {
     throw new Error(errorMessage);
   }
 };
+
 
 // SignUp function
 export const signUp = async ({ name, email, password, confirmPassword }) => {
@@ -44,3 +47,4 @@ export const signUp = async ({ name, email, password, confirmPassword }) => {
     throw new Error(errorMessage);
   }
 };
+
